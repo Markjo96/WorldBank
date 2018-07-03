@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8EEF2"
+    android:visibility="visible"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/ivWorldBank"
+        android:layout_width="194dp"
+        android:layout_height="219dp"
+        android:layout_marginBottom="284dp"
+        android:layout_marginStart="184dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/worldbank" />
+
+    <TextView
+        android:id="@+id/tvIndicators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="16695 indicators"
+        android:textColor="#262D52"
+        android:textSize="21dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivWorldBank"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCountries"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="304 countries"
+        android:textColor="#306191"
+        android:textSize="21dp"
+        app:layout_constraintStart_toStartOf="@+id/tvIndicators"
+        app:layout_constraintTop_toBottomOf="@+id/tvIndicators" />
+
+    <TextView
+        android:id="@+id/tvSources"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="43 sources"
+        android:textColor="#2a82a7"
+        android:textSize="21dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCountries" />
+
+    <TextView
+        android:id="@+id/tvTopics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="21 topics"
+        android:textColor="#39acde"
+        android:textSize="21dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSources" />
+
+    <Button
+        android:id="@+id/btnCountry"
+        android:layout_width="226dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="96dp"
+        android:background="@drawable/rounded_button_blue"
+        android:drawableRight="@mipmap/countryblue"
+        android:text="Country"
+        android:textColor="#262D52"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvIndicators"
+        app:layout_constraintTop_toBottomOf="@+id/tvTopics" />
+
+    <Button
+        android:id="@+id/btnTopic"
+        android:layout_width="226dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_button_white"
+        android:drawableRight="@mipmap/topic"
+        android:text="Topic"
+        android:textColor="#262D52"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/btnCountry"
+        app:layout_constraintTop_toBottomOf="@+id/btnCountry" />
+
+    <Button
+        android:id="@+id/btnPrevImg"
+        android:layout_width="226dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_button_blue"
+        android:drawableRight="@mipmap/savedimage"
+        android:text="Saved Image"
+        android:textColor="#262D52"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/btnTopic"
+        app:layout_constraintTop_toBottomOf="@+id/btnTopic" />
+
+    <Button
+        android:id="@+id/btnData"
+        android:layout_width="226dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_button_white"
+        android:drawableRight="@mipmap/offlineupload"
+        android:text="Offline Upload"
+        android:textColor="#262D52"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/btnPrevImg"
+        app:layout_constraintTop_toBottomOf="@+id/btnPrevImg" />
+
+</android.support.constraint.ConstraintLayout>
