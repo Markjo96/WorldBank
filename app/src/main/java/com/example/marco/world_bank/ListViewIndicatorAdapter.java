@@ -1,6 +1,5 @@
 package com.example.marco.world_bank;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -12,42 +11,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
-public class ListViewCountryAdapter extends BaseAdapter {
+
+public class ListViewIndicatorAdapter extends BaseAdapter {
 
     // Declare Variables
     Context mContext;
     LayoutInflater inflater;
     private Bundle bd;
-    private List<Country> countryList = null;
-    private ArrayList<Country> arraylist;
+    private List<Indicator> indicatorList = null;
+    private ArrayList<Indicator> arraylist;
 
-    public ListViewCountryAdapter(Context context, List<Country> countryList) {
+    public ListViewIndicatorAdapter(Context context, List<Indicator> indicatorList) {
         mContext = context;
-        this.countryList = countryList;
-        this.bd=bd;
+        this.indicatorList = indicatorList;
+        //this.bd=bd;
         inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<Country>();
-        this.arraylist.addAll(countryList);
+        this.arraylist = new ArrayList<Indicator>();
+        this.arraylist.addAll(indicatorList);
     }
 
     public class ViewHolder {
-        TextView name;
-        TextView population;
-        ImageView flag;
-    }
+        TextView name;}
 
     @Override
     public int getCount() {
-        return countryList.size();
+        return indicatorList.size();
     }
 
     @Override
-    public Country getItem(int position) {
-        return countryList.get(position);
+    public Indicator getItem(int position) {
+        return indicatorList.get(position);
     }
 
     @Override
@@ -62,23 +58,15 @@ public class ListViewCountryAdapter extends BaseAdapter {
         row = view;
         if (view == null) {
             holder = new ViewHolder();
-            row = inflater.inflate(i % 2 == 0 ? R.layout.custom_listview_blue : R.layout.custom_listview_white, null);
+            row = inflater.inflate(R.layout.custom_listview_white, null);
             // Locate the TextViews in listview_item.xml
             holder.name = (TextView) row.findViewById(R.id.tvCountryName);
-            /*holder.population = (TextView) row.findViewById(R.id.tvCountryPopulation);
-            // Locate the ImageView in listview_item.xml
-            holder.flag = (ImageView) row.findViewById(R.id.ivFlag);
-            row.setTag(holder);*/
+            row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
         }
         // Set the results into TextViews
-        holder.name.setText(countryList.get(i).getName());
-        /*holder.population.setText(countryList.get(i)
-                .getPopulation());*/
-        // Set the results into ImageView
-        //if (countryList.get(i).getName())
-        //holder.flag.setImageResource(R.mipmap.austria);
+        holder.name.setText(indicatorList.get(i).getName());
         // Listen for ListView Item Click
         row.setOnClickListener(new OnClickListener() {
 
@@ -86,10 +74,11 @@ public class ListViewCountryAdapter extends BaseAdapter {
             public void onClick(View arg0) {
                 // Send single item click data to SingleItemView Class
                 //if (bd == null){
-                    Intent intent = new Intent(mContext, TopicActivity.class);
-                    intent.putExtra("name",
-                            (countryList.get(i).getName()));
-                    mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, CountryActivity.class);
+                intent.putExtra("name",
+                        (indicatorList.get(i).getName()));
+                mContext.startActivity(intent);
+                System.out.println("Indicator activity");
                 /*}
                 else{
                     System.out.println("Do graphics");
@@ -103,14 +92,14 @@ public class ListViewCountryAdapter extends BaseAdapter {
     // Filter Class
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
-        countryList.clear();
+        indicatorList.clear();
         if (charText.length() == 0) {
-            countryList.addAll(arraylist);
+            indicatorList.addAll(arraylist);
         } else {
-            for (Country country : arraylist) {
-                if (country.getName().toLowerCase(Locale.getDefault())
+            for (Indicator indicator : arraylist) {
+                if (indicator.getName().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
-                    countryList.add(country);
+                    indicatorList.add(indicator);
                 }
             }
         }
