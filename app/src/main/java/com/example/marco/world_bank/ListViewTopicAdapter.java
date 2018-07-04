@@ -72,17 +72,47 @@ public class ListViewTopicAdapter extends BaseAdapter {
         // Set the results into TextViews
         holder.name.setText(topicList.get(i).getValue());
         // Listen for ListView Item Click
+
+
         row.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
+
+                String topicId = topicList.get(i).getId();
+                String uri = "http://api.worldbank.org/v2/topics/"+topicId+"/indicators?format=json";
+                String json = getJSON(uri);
+
+                Parse parse = new Parse(mContext);
+                List<Indicator> indicatorList= parse.parseJsonIndicator();
+                ArrayList<String> listId = new ArrayList<>();
+                ArrayList<String> listValue = new ArrayList<>();
+                ArrayList<String> listNote = new ArrayList<>();
+                for (int i=0;i<indicatorList.size();i++){
+                    String indicatorId = indicatorList.get(i).getId();
+                    String indicatorValue = indicatorList.get(i).getName();
+                    String indicatorNote = indicatorList.get(i).getSourceNote();
+
+                    listId.add(indicatorId);
+                    listValue.add(indicatorValue);
+                    listNote.add(indicatorNote);
+                }
+                Intent indicatorIntent = new Intent(mContext,IndicatorActivity);
+                indicatorIntent.putStringArrayListExtra("ID",listId);
+                indicatorIntent.putStringArrayListExtra("VALUE",listValue);
+                indicatorIntent.putStringArrayListExtra("NOTE",listNote);
+
+                mContext.startActivity(indicatorIntent);
+
+                return;
+                //topicList.get(i);
                 // Send single item click data to SingleItemView Class
                 //if (bd == null){
                 /*Intent intent = new Intent(mContext, TopicActivity.class);
                 intent.putExtra("name",
                         (topicList.get(i).getName()));
                 mContext.startActivity(intent);*/
-                System.out.println("Indicator activity");
+                //System.out.println(topicList.get(i).getValue());
                 /*}
                 else{
                     System.out.println("Do graphics");
@@ -91,6 +121,10 @@ public class ListViewTopicAdapter extends BaseAdapter {
         });
 
         return row;
+    }
+
+    public final String getJSON(String uri){
+        return new AsyncQuery().doInBackground(uri);
     }
 
     // Filter Class
