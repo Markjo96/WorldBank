@@ -64,7 +64,6 @@ public class ListViewTopicAdapter extends BaseAdapter {
             row = inflater.inflate(i % 2 == 0 ? R.layout.custom_listview_white : R.layout.custom_listview_blue, null);
             // Locate the TextViews in listview_item.xml
             holder.name = (TextView) row.findViewById(R.id.tvCountryName);
-            holder.name.setY(30);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
@@ -82,7 +81,10 @@ public class ListViewTopicAdapter extends BaseAdapter {
                 intent.putExtra("name",
                         (topicList.get(i).getName()));
                 mContext.startActivity(intent);*/
-                System.out.println("Indicator activity");
+                Intent intent = new Intent(mContext, IndicatorActivity.class);
+                intent.putExtra("name",
+                        (topicList.get(i).getValue()));
+                mContext.startActivity(intent);
                 /*}
                 else{
                     System.out.println("Do graphics");

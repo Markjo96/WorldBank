@@ -5,39 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/customshape"
-    android:tint="#42a5f5">
-
-    <ImageView
-        android:id="@+id/ivFlag"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:contentDescription="TODO"
-        android:padding="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+    android:background="@drawable/customshape_blue"
+    android:tint="#306191">
 
     <TextView
         android:id="@+id/tvCountryName"
         android:layout_width="274dp"
         android:layout_height="27dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="24dp"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:textColor="#36a8ff"
+        android:textColor="#306191"
         android:textSize="20dp"
-        app:layout_constraintStart_toEndOf="@+id/ivFlag"
-        app:layout_constraintTop_toTopOf="@+id/ivFlag" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvCountryPopulation"
-        android:layout_width="274dp"
-        android:layout_height="18dp"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:textColor="#36a8ff"
-        app:layout_constraintStart_toStartOf="@+id/tvCountryName"
-        app:layout_constraintTop_toBottomOf="@+id/tvCountryName" />
 </android.support.constraint.ConstraintLayout>
