@@ -3,7 +3,7 @@ package com.example.marco.world_bank.async;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.marco.world_bank.model.Indicator;
+import com.example.marco.world_bank.entities.Indicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

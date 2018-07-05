@@ -8,10 +8,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 
-import com.example.marco.world_bank.adapter.ListViewIndicatorAdapter;
+import com.example.marco.world_bank.adapters.ListViewIndicatorAdapter;
 import com.example.marco.world_bank.Parse;
 import com.example.marco.world_bank.R;
-import com.example.marco.world_bank.model.Indicator;
+import com.example.marco.world_bank.entities.Indicator;
 
 import java.util.ArrayList;
 import java.util.List;

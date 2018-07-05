@@ -1,4 +1,4 @@
-package com.example.marco.world_bank.adapter;
+package com.example.marco.world_bank.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.activity.IndicatorActivity;
 import com.example.marco.world_bank.async.AsyncIndicatorParse;
 import com.example.marco.world_bank.async.AsyncQuery;
-import com.example.marco.world_bank.model.Indicator;
-import com.example.marco.world_bank.model.Topic;
+import com.example.marco.world_bank.entities.Indicator;
+import com.example.marco.world_bank.entities.Topic;
 
 public class ListViewTopicAdapter extends BaseAdapter {
 

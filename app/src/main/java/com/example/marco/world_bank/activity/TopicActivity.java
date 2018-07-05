@@ -11,10 +11,10 @@ import android.widget.ListView;
 
 
 import com.example.marco.world_bank.async.AsyncTopicParse;
-import com.example.marco.world_bank.adapter.ListViewTopicAdapter;
+import com.example.marco.world_bank.adapters.ListViewTopicAdapter;
 import com.example.marco.world_bank.Parse;
 import com.example.marco.world_bank.R;
-import com.example.marco.world_bank.model.Topic;
+import com.example.marco.world_bank.entities.Topic;
 
 import java.util.ArrayList;
 import java.util.List;

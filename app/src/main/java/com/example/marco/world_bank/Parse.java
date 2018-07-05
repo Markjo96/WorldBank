@@ -2,9 +2,9 @@ package com.example.marco.world_bank;
 
 import android.content.Context;
 
-import com.example.marco.world_bank.model.Country;
-import com.example.marco.world_bank.model.Indicator;
-import com.example.marco.world_bank.model.Topic;
+import com.example.marco.world_bank.entities.Country;
+import com.example.marco.world_bank.entities.Indicator;
+import com.example.marco.world_bank.entities.Topic;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

@@ -1,4 +1,4 @@
-package com.example.marco.world_bank.model;
+package com.example.marco.world_bank.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -10,11 +10,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 
-import com.example.marco.world_bank.adapter.ListViewCountryAdapter;
+import com.example.marco.world_bank.adapters.ListViewCountryAdapter;
 import com.example.marco.world_bank.Parse;
 import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.async.AsyncCountryParse;
-import com.example.marco.world_bank.model.Country;
+import com.example.marco.world_bank.entities.Country;
 
 import java.util.ArrayList;
 import java.util.List;

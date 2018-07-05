@@ -3,9 +3,10 @@ package com.example.marco.world_bank.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
 import com.example.marco.world_bank.R;
-import com.example.marco.world_bank.model.Graph;
+import com.example.marco.world_bank.entities.Graph;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -19,6 +20,7 @@ import java.util.List;
 public class GraphActivity extends AppCompatActivity{
 
     LineChart chart;
+    Button btnGraph;
     List<Graph> arraylist = new ArrayList<>();
 
     @Override
@@ -27,6 +29,7 @@ public class GraphActivity extends AppCompatActivity{
         setContentView(R.layout.graph_activity);
 
         chart = findViewById(R.id.chart);
+        btnGraph = findViewById(R.id.btnGraph);
         /*LineChart chart = new LineChart(this);
         RelativeLayout rl = findViewById(R.id.chart);
         rl.addView(chart);*/

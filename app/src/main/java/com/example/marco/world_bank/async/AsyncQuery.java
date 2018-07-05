@@ -44,8 +44,6 @@ public class AsyncQuery extends AsyncTask<String,Void,String> {
             urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
             urlConnection.setDoInput(true);
             urlConnection.connect();
-            InputStreamReader in;
-            BufferedReader bin;
             if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
                 System.out.println("CONNECTION LOST!");
             }

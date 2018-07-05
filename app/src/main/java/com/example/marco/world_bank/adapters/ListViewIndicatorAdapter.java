@@ -1,4 +1,4 @@
-package com.example.marco.world_bank.adapter;
+package com.example.marco.world_bank.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,13 +19,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.activity.CountryActivity;
 import com.example.marco.world_bank.activity.GraphActivity;
 import com.example.marco.world_bank.async.AsyncGraphParse;
 import com.example.marco.world_bank.async.AsyncQuery;
-import com.example.marco.world_bank.model.Graph;
-import com.example.marco.world_bank.model.Indicator;
+import com.example.marco.world_bank.entities.Graph;
+import com.example.marco.world_bank.entities.Indicator;
+import com.example.marco.world_bank.entities.JsonDao;
 
 
 public class ListViewIndicatorAdapter extends BaseAdapter {
@@ -93,10 +96,11 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
             public void onClick(View arg0) {
                 // Send single item click data to SingleItemView Class
                 if (choice == 2){
-                Intent intent = new Intent(mContext, CountryActivity.class);
-                intent.putExtra("INDICATOR_ID", indicatorList.get(i).getId());
-                mContext.startActivity(intent);
-                System.out.println("Indicator activity");
+                    Intent intent = new Intent(mContext, CountryActivity.class);
+                    intent.putExtra("INDICATOR_ID", indicatorList.get(i).getId());
+                    intent.putExtra("CHOICE",2);
+                    mContext.startActivity(intent);
+                    System.out.println("Indicator activity");
                 } else{
 
                     String indicatorId = indicatorList.get(i).getId();
@@ -104,18 +108,33 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
                     Log.i("IO",indicatorId);
                     String uri = "http://api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
                             indicatorId+"?per_page=100&format=json";
-
-                    AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
                     String json = null;
-                    try {
-                        json = asyncTask.execute(uri).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
+
+
+                    //Query BD
+                    JsonDB jsonDB = new JsonDB(mContext);
+                    jsonDB.open();
+                    //jsonDB.deleteTable();
+                    JsonDao jsonDao = new JsonDao(uri,null);
+                    Cursor cursor = jsonDB.getJson(jsonDao);
+                    if (cursor.moveToNext()){
+                        json = cursor.getString(cursor.getColumnIndex("json"));
+                    }
+                    if(json == null ){
+                        AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
+                        try {
+                            json = asyncTask.execute(uri).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        //Add json to DB
+                        jsonDao.setJson(json);
+                        jsonDB.addJson(jsonDao);
                     }
 
-                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse();
+                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse(mContext);
                     List<Graph> graphList = null;
                     try {
                         graphList = asyncTaskParse.execute(json).get();

@@ -1,4 +1,4 @@
-package com.example.marco.world_bank.adapter;
+package com.example.marco.world_bank.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,10 @@ import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.R;
+import com.example.marco.world_bank.activity.GraphActivity;
 import com.example.marco.world_bank.activity.TopicActivity;
 import com.example.marco.world_bank.async.AsyncGraphParse;
 import com.example.marco.world_bank.async.AsyncQuery;
-import com.example.marco.world_bank.model.Country;
-import com.example.marco.world_bank.model.Graph;
+import com.example.marco.world_bank.entities.Country;
+import com.example.marco.world_bank.entities.Graph;
+import com.example.marco.world_bank.entities.JsonDao;
 
 public class ListViewCountryAdapter extends BaseAdapter {
 
@@ -104,27 +109,53 @@ public class ListViewCountryAdapter extends BaseAdapter {
                 }
                 else{
                     String isoCode2 = countryList.get(i).getIso2Code();
-                    String uri = "api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
+                    String uri = "http://api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
                             indicatorId+"?per_page=100&format=json";
-                    AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
+                    System.out.println("Isocode: "+isoCode2+", Id indicator: "+indicatorId);
+
                     String json = null;
+                    //Query DB
+                    JsonDB jsonDB = new JsonDB(mContext);
+                    jsonDB.open();
+                    JsonDao jsonDao = new JsonDao(uri,null);
+                    Cursor cursor = jsonDB.getJson(jsonDao);
+                    if (cursor.moveToNext()){
+                        json = cursor.getString(cursor.getColumnIndex("json"));
+                    }
+
+                    if(json == null ){
+                        AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
+
+                        try {
+                            json = asyncTask.execute(uri).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                        jsonDao.setJson(json);
+                        jsonDB.addJson(jsonDao);
+                    }
+
+
+                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse(mContext);
+                    List<Graph> graphList = null;
                     try {
-                        json = asyncTask.execute(uri).get();
+                        graphList = asyncTaskParse.execute(json).get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
 
-                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse();
-
-                    try {
-                        List<Graph> graphList = asyncTaskParse.execute(json).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    Intent intent = new Intent(mContext,GraphActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("GRAPH_DATA", (ArrayList<? extends Parcelable>)
+                            graphList);
+                    intent.putExtras(bundle);
+                    System.out.println("Do graphics");
+                    mContext.startActivity(intent);
 
 
                     System.out.println("Do graphics");
