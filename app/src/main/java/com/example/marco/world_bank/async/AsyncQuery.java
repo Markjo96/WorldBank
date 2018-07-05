@@ -1,11 +1,9 @@
-package com.example.marco.world_bank;
+package com.example.marco.world_bank.async;
 
 import android.os.AsyncTask;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -17,6 +15,8 @@ public class AsyncQuery extends AsyncTask<String,Void,String> {
     public static  String REQUEST_METOD = "GET";
     public static final int READ_TIMEOUT = 15000;
     public static final int CONNECTION_TIMEOUT = 15000;
+    InputStreamReader in;
+    BufferedReader bin;
 
     @Override
     protected void onPostExecute(String result) {
@@ -44,25 +44,30 @@ public class AsyncQuery extends AsyncTask<String,Void,String> {
             urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
             urlConnection.setDoInput(true);
             urlConnection.connect();
+            InputStreamReader in;
+            BufferedReader bin;
             if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
                 System.out.println("CONNECTION LOST!");
             }
-            if(urlConnection.getResponseMessage().equals(200)){
-                System.out.println("CONNECTION LOST!");
+            if(!urlConnection.getResponseMessage().equals(200)){
+                System.out.println("CONNECTION LOST BOH!");
             }
-            InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
-            BufferedReader bin = new BufferedReader(in);
+            in = new InputStreamReader(urlConnection.getInputStream());
+            bin = new BufferedReader(in);
             String inputLine;
             while((inputLine=bin.readLine()) != null){
                 stringBuilder.append(inputLine);
             }
-            in.close();
-            bin.close();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             urlConnection.disconnect();
-
+            try {
+                in.close();
+                bin.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println(stringBuilder.toString());
         return stringBuilder.toString();

@@ -1,6 +1,5 @@
-package com.example.marco.world_bank;
+package com.example.marco.world_bank.adapter;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -18,6 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.example.marco.world_bank.R;
+import com.example.marco.world_bank.activity.TopicActivity;
+import com.example.marco.world_bank.async.AsyncGraphParse;
+import com.example.marco.world_bank.async.AsyncQuery;
+import com.example.marco.world_bank.model.Country;
+import com.example.marco.world_bank.model.Graph;
+
 public class ListViewCountryAdapter extends BaseAdapter {
 
     // Declare Variables
@@ -27,8 +33,9 @@ public class ListViewCountryAdapter extends BaseAdapter {
     private List<Country> countryList = null;
     private ArrayList<Country> arraylist;
     private int choice;
+    private String indicatorId;
 
-    public ListViewCountryAdapter(Context context, List<Country> countryList, int choice) {
+    public ListViewCountryAdapter(Context context, List<Country> countryList, int choice,String indicatorId) {
         mContext = context;
         this.countryList = countryList;
         this.bd=bd;
@@ -36,6 +43,8 @@ public class ListViewCountryAdapter extends BaseAdapter {
         this.arraylist = new ArrayList<>();
         this.arraylist.addAll(countryList);
         this.choice = choice;
+        this.indicatorId = indicatorId;
+
     }
 
     public class ViewHolder {
@@ -87,13 +96,37 @@ public class ListViewCountryAdapter extends BaseAdapter {
             public void onClick(View arg0) {
                 // Send single item click data to SingleItemView Class
                 if (choice == 1){
-
-
+                    //Send choice and isoCode2 to TopicActivity
                     Intent intent = new Intent(mContext, TopicActivity.class);
+                    intent.putExtra("ISOCODE",countryList.get(i).getIso2Code());
                     intent.putExtra("CHOICE", choice);
                     mContext.startActivity(intent);
                 }
                 else{
+                    String isoCode2 = countryList.get(i).getIso2Code();
+                    String uri = "api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
+                            indicatorId+"?per_page=100&format=json";
+                    AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
+                    String json = null;
+                    try {
+                        json = asyncTask.execute(uri).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse();
+
+                    try {
+                        List<Graph> graphList = asyncTaskParse.execute(json).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+
                     System.out.println("Do graphics");
                 }
             }

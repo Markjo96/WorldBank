@@ -1,17 +1,15 @@
-package com.example.marco.world_bank;
+package com.example.marco.world_bank.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.example.marco.world_bank.model.Indicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -32,23 +30,9 @@ public class AsyncIndicatorParse extends AsyncTask<String,Void,List<Indicator>> 
             e.printStackTrace();
             return null;
         }
-
-        /*try{
-
-            InputStream is = context.getAssets().open("indicator");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        }catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }*/
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Indicator>>(){}.getType();
         List<Indicator> list = gson.fromJson(String.valueOf(jsonArray),listType);
-        //System.out.println(list.get(0).getSourceNote());
         return list;
     }
 

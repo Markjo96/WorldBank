@@ -2,13 +2,15 @@ package com.example.marco.world_bank;
 
 import android.content.Context;
 
+import com.example.marco.world_bank.model.Country;
+import com.example.marco.world_bank.model.Indicator;
+import com.example.marco.world_bank.model.Topic;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Parse {

@@ -1,6 +1,5 @@
-package com.example.marco.world_bank;
+package com.example.marco.world_bank.adapter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
-import static android.support.v7.widget.AppCompatDrawableManager.get;
+import com.example.marco.world_bank.R;
+import com.example.marco.world_bank.activity.IndicatorActivity;
+import com.example.marco.world_bank.async.AsyncIndicatorParse;
+import com.example.marco.world_bank.async.AsyncQuery;
+import com.example.marco.world_bank.model.Indicator;
+import com.example.marco.world_bank.model.Topic;
 
 public class ListViewTopicAdapter extends BaseAdapter {
 
@@ -30,8 +33,9 @@ public class ListViewTopicAdapter extends BaseAdapter {
     private List<Topic> topicList = null;
     private ArrayList<Topic> arraylist;
     private int choice;
+    private String isoCode2;
 
-    public ListViewTopicAdapter(Context context, List<Topic> topicList, int choice) {
+    public ListViewTopicAdapter(Context context, List<Topic> topicList, int choice,String isoCode2) {
         this.mContext = context;
         this.topicList = topicList;
         //this.bd=bd;
@@ -39,6 +43,7 @@ public class ListViewTopicAdapter extends BaseAdapter {
         this.arraylist = new ArrayList<Topic>();
         this.arraylist.addAll(topicList);
         this.choice=choice;
+        this.isoCode2 = isoCode2;
     }
 
     public class ViewHolder {
@@ -110,8 +115,9 @@ public class ListViewTopicAdapter extends BaseAdapter {
                 bundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) indicatorList);
                 indicatorIntent.putExtras(bundle);
                 indicatorIntent.putExtra("CHOICE",choice);
-
-                indicatorIntent.putExtra("SIZE",indicatorList.size());
+                if (choice == 1){
+                    indicatorIntent.putExtra("ISOCODE",isoCode2);
+                }
 
                 mContext.startActivity(indicatorIntent);
 

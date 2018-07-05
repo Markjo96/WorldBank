@@ -1,8 +1,9 @@
-package com.example.marco.world_bank;
+package com.example.marco.world_bank.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.example.marco.world_bank.model.Topic;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -18,21 +19,26 @@ public class AsyncTopicParse extends AsyncTask<Void,Void,List<Topic>> {
     public AsyncTopicParse(Context context) {
         this.context = context;
     }
-
+    InputStream is;
     @Override
     protected List<Topic> doInBackground(Void... voids) {
 
         String json;
         try {
-            InputStream is = context.getAssets().open("topic");
+            is = context.getAssets().open("topic");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
-            is.close();
             json = new String(buffer, "UTF-8");
         }catch (IOException e) {
             e.printStackTrace();
             return null;
+        }finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Topic>>(){}.getType();

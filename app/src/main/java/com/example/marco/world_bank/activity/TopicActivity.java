@@ -1,16 +1,20 @@
-package com.example.marco.world_bank;
+package com.example.marco.world_bank.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 
+
+import com.example.marco.world_bank.async.AsyncTopicParse;
+import com.example.marco.world_bank.adapter.ListViewTopicAdapter;
+import com.example.marco.world_bank.Parse;
+import com.example.marco.world_bank.R;
+import com.example.marco.world_bank.model.Topic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,11 @@ public class TopicActivity extends Activity {
 
         Intent intent = getIntent();
         int choice = intent.getIntExtra("CHOICE",0);
+        String isoCode2 = null;
+        if (choice == 1){
+            isoCode2 = intent.getStringExtra("ISOCODE");
+        }
+
         // Generate sample data
         list =  findViewById(R.id.lvTopics);
 
@@ -52,7 +61,7 @@ public class TopicActivity extends Activity {
 //
 
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewTopicAdapter(this, topicList, choice);
+        adapter = new ListViewTopicAdapter(this, topicList, choice, isoCode2);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
