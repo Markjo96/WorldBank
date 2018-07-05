@@ -1,6 +1,9 @@
 package com.example.marco.world_bank;
 
-public class Topic {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Topic implements Parcelable{
 
     private String id;
     private String value;
@@ -35,4 +38,13 @@ public class Topic {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

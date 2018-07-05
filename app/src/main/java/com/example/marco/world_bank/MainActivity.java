@@ -64,13 +64,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btnCountry:
                     Intent intentCountry = new Intent(MainActivity.this,
                             CountryActivity.class);
+                    intentCountry.putExtra("CHOICE",1);
                     startActivity(intentCountry);
                     break;
                 case R.id.btnTopic:
 
                     //start activity
                     Intent intentTopic = new Intent(context,TopicActivity.class);
-
+                    intentTopic.putExtra("CHOICE",2);
                     startActivity(intentTopic);
                     break;
                 case R.id.btnPrevImg:

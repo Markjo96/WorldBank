@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,20 +32,21 @@ public class IndicatorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.indicator_activity);
 
+        Bundle bundle = getIntent().getExtras();
+        int choice = getIntent().getIntExtra("CHOICE",0);
+        arraylist=bundle.getParcelableArrayList("data");
+
+
         // Generate sample data
         list =  findViewById(R.id.lvIndicators);
 
-        arraylist =  parse.parseJsonIndicator();
-
-//
-
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewIndicatorAdapter(this, arraylist);
+        adapter = new ListViewIndicatorAdapter(this,arraylist, choice);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (EditText) findViewById(R.id.txtSearch);
+        editsearch =  findViewById(R.id.txtSearch);
 
         // Capture Text in EditText
         editsearch.addTextChangedListener(new TextWatcher() {

@@ -1,10 +1,13 @@
 package com.example.marco.world_bank;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 import java.util.List;
 
-public class Indicator {
+public class Indicator implements Parcelable{
 
     /**
      * id : 1.0.PSev.1.90usd
@@ -23,6 +26,21 @@ public class Indicator {
     private String sourceNote;
     private String sourceOrganization;
     private List<TopicsBean> topics;
+
+    public Indicator(Parcel source){
+        id = source.readString();
+        name = source.readString();
+        sourceNote = source.readString();
+    }
+    public Indicator(String id, String name, String sourceNote) {
+        this.id = id;
+        this.name = name;
+        this.sourceNote = sourceNote;
+    }
+
+    public Indicator(String id) {
+        this.id = id;
+    }
 
     public static Indicator objectFromData(String str) {
 
@@ -83,6 +101,18 @@ public class Indicator {
 
     public void setTopics(List<TopicsBean> topics) {
         this.topics = topics;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(sourceNote);
     }
 
     public static class SourceBean {
@@ -146,4 +176,17 @@ public class Indicator {
             this.value = value;
         }
     }
+
+    public static final Parcelable.Creator<Indicator> CREATOR=new Parcelable.Creator<Indicator>(){
+
+        @Override
+        public Indicator createFromParcel(Parcel source) {
+            return new Indicator(source);
+        }
+
+        @Override
+        public Indicator[] newArray(int size) {
+            return new Indicator[size];
+        }
+    };
 }

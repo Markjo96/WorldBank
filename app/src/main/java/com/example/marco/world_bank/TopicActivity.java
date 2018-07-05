@@ -3,6 +3,7 @@ package com.example.marco.world_bank;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class TopicActivity extends Activity {
 
@@ -31,15 +33,26 @@ public class TopicActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.topic_activity);
 
+        Intent intent = getIntent();
+        int choice = intent.getIntExtra("CHOICE",0);
         // Generate sample data
         list =  findViewById(R.id.lvTopics);
 
-        arraylist =  parse.parseJsonTopic();
+        AsyncTask<Void,Void,List<Topic>> asyncTask = new AsyncTopicParse(this);
+        List<Topic> topicList = null;
+        try {
+            topicList = asyncTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
 
 //
 
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewTopicAdapter(this, arraylist);
+        adapter = new ListViewTopicAdapter(this, topicList, choice);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 

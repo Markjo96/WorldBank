@@ -11,8 +11,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AsyncQuery extends AsyncTask<String,Void,String> {
+import javax.net.ssl.HttpsURLConnection;
 
+public class AsyncQuery extends AsyncTask<String,Void,String> {
+    public static  String REQUEST_METOD = "GET";
+    public static final int READ_TIMEOUT = 15000;
+    public static final int CONNECTION_TIMEOUT = 15000;
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -30,18 +39,32 @@ public class AsyncQuery extends AsyncTask<String,Void,String> {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            BufferedReader bin = new BufferedReader(new InputStreamReader(in));
+            urlConnection.setRequestMethod(REQUEST_METOD);
+            urlConnection.setReadTimeout(READ_TIMEOUT);
+            urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+            urlConnection.setDoInput(true);
+            urlConnection.connect();
+            if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
+                System.out.println("CONNECTION LOST!");
+            }
+            if(urlConnection.getResponseMessage().equals(200)){
+                System.out.println("CONNECTION LOST!");
+            }
+            InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
+            BufferedReader bin = new BufferedReader(in);
             String inputLine;
             while((inputLine=bin.readLine()) != null){
                 stringBuilder.append(inputLine);
             }
+            in.close();
+            bin.close();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             urlConnection.disconnect();
-        }
 
+        }
+        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 }

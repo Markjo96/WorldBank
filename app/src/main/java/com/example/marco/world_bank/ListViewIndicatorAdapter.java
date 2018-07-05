@@ -23,14 +23,16 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
     private Bundle bd;
     private List<Indicator> indicatorList = null;
     private ArrayList<Indicator> arraylist;
+    private int choice;
 
-    public ListViewIndicatorAdapter(Context context, List<Indicator> indicatorList) {
+    public ListViewIndicatorAdapter(Context context, List<Indicator> indicatorList,int choice) {
         mContext = context;
         this.indicatorList = indicatorList;
         //this.bd=bd;
         inflater = LayoutInflater.from(mContext);
         this.arraylist = new ArrayList<Indicator>();
         this.arraylist.addAll(indicatorList);
+        this.choice = choice;
     }
 
     public class ViewHolder {
@@ -60,29 +62,31 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
             holder = new ViewHolder();
             row = inflater.inflate(R.layout.custom_listview_white, null);
             // Locate the TextViews in listview_item.xml
-            holder.name = (TextView) row.findViewById(R.id.tvCountryName);
+            holder.name =  row.findViewById(R.id.tvCountryName);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
         }
         // Set the results into TextViews
-        holder.name.setText(indicatorList.get(i).getName());
+        holder.name.setText(indicatorList.get(i).getId());
         // Listen for ListView Item Click
+
+
+
         row.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 // Send single item click data to SingleItemView Class
-                //if (bd == null){
+                if (choice == 2){
                 Intent intent = new Intent(mContext, CountryActivity.class);
                 intent.putExtra("name",
                         (indicatorList.get(i).getName()));
                 mContext.startActivity(intent);
                 System.out.println("Indicator activity");
-                /*}
-                else{
+                } else{
                     System.out.println("Do graphics");
-                }*/
+                }
             }
         });
 

@@ -4,9 +4,11 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,14 +26,16 @@ public class ListViewCountryAdapter extends BaseAdapter {
     private Bundle bd;
     private List<Country> countryList = null;
     private ArrayList<Country> arraylist;
+    private int choice;
 
-    public ListViewCountryAdapter(Context context, List<Country> countryList) {
+    public ListViewCountryAdapter(Context context, List<Country> countryList, int choice) {
         mContext = context;
         this.countryList = countryList;
         this.bd=bd;
         inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<Country>();
+        this.arraylist = new ArrayList<>();
         this.arraylist.addAll(countryList);
+        this.choice = choice;
     }
 
     public class ViewHolder {
@@ -74,26 +78,24 @@ public class ListViewCountryAdapter extends BaseAdapter {
         }
         // Set the results into TextViews
         holder.name.setText(countryList.get(i).getName());
-        /*holder.population.setText(countryList.get(i)
-                .getPopulation());*/
-        // Set the results into ImageView
-        //if (countryList.get(i).getName())
-        //holder.flag.setImageResource(R.mipmap.austria);
-        // Listen for ListView Item Click
+
+
+
         row.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 // Send single item click data to SingleItemView Class
-                //if (bd == null){
+                if (choice == 1){
+
+
                     Intent intent = new Intent(mContext, TopicActivity.class);
-                    intent.putExtra("name",
-                            (countryList.get(i).getName()));
+                    intent.putExtra("CHOICE", choice);
                     mContext.startActivity(intent);
-                /*}
+                }
                 else{
                     System.out.println("Do graphics");
-                }*/
+                }
             }
         });
 

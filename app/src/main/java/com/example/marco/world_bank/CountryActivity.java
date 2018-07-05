@@ -3,6 +3,7 @@ package com.example.marco.world_bank;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class CountryActivity extends Activity {
 
@@ -33,37 +35,23 @@ public class CountryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.country_activity);
 
-        // Generate sample data
+        Intent intent = getIntent();
 
-        /*name = new String[] { "China", "India", "United States",
-                "Indonesia", "Brazil", "Pakistan", "Nigeria", "Bangladesh",
-                "Russia", "Japan" };
+        int choice = intent.getIntExtra("CHOICE",0);
 
-        population = new String[] { "1,354,040,000", "1,210,193,422",
-                "315,761,000", "237,641,326", "193,946,886", "182,912,000",
-                "170,901,000", "152,518,015", "143,369,806", "127,360,000" };
-
-        flag = new int[] {R.mipmap.china, R.mipmap.india,
-                R.mipmap.unitedstates, R.mipmap.indonesia,
-                R.mipmap.brazil, R.mipmap.pakistan, R.mipmap.nigeria,
-                R.mipmap.bangladesh, R.mipmap.russia, R.mipmap.japan };*/
-
-        // Locate the ListView in listview_main.xml
         list =  findViewById(R.id.lvCountries);
-        //intent = getIntent();
-        //bd = intent.getExtras();
-        //System.out.println(intent);
 
-        /*for (int i = 0; i < name.length; i++)
-        {
-            Country country = new Country(name[i],
-                    population[i], flag[i]);
-            // Binds all strings into an array
-            arraylist.add(country);
-        }*/
-        arraylist=parse.parseJsonCountry();
+        List<Country> countryList = null;
+        AsyncTask<Void,Void,List<Country>> asyncTask = new AsyncCountryParse(this);
+        try {
+            countryList = asyncTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewCountryAdapter(this, arraylist);
+        adapter = new ListViewCountryAdapter(this, countryList, choice);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
