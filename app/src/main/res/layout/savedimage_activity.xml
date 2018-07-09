@@ -8,19 +8,18 @@
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    tools:context=".activity.IndicatorActivity">
+    android:focusableInTouchMode="true">
     <EditText
         android:id="@+id/txtSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#36a8ff"
         android:textColor="#36a8ff"
-        android:hint="Choose an indicator"
+        android:hint="Search a saved image"
         android:inputType="textAutoComplete" />
 
     <ListView
-        android:id="@+id/lvIndicators"
+        android:id="@+id/lvImages"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="50dp"
