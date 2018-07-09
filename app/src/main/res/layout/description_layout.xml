@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvDesName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:singleLine="false"
+        android:textColor="#6346f7"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDesNote"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        app:layout_constraintStart_toStartOf="@+id/tvDesName"
+        app:layout_constraintTop_toBottomOf="@+id/tvDesName" />
+</android.support.constraint.ConstraintLayout>

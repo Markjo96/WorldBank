@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         btnTopic = findViewById(R.id.btnTopic);
         btnPrevImg = findViewById(R.id.btnPrevImg);
         btnData = findViewById(R.id.btnData);
-        ivWorldBank = findViewById(R.id.ivWorldBank);
+        //ivWorldBank = findViewById(R.id.ivWorldBank);
 
         btnCountry.setOnClickListener(listener);
         btnTopic.setOnClickListener(listener);
@@ -62,8 +62,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intentTopic);
                     break;
                 case R.id.btnPrevImg:
+
+                    Intent intentSavedImage = new Intent(context,SavedImageActivity.class);
                     break;
                 case R.id.btnData:
+                    Intent intentCache = new Intent(context,CacheActivity.class);
                     break;
 
             }
