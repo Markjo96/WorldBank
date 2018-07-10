@@ -17,6 +17,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:text="Clear Cache"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -25,9 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#36a8ff"
-        android:textColor="#36a8ff"
         android:hint="Search cache data"
-        android:inputType="textAutoComplete" />
+        android:inputType="textAutoComplete"
+        android:textColor="#36a8ff" />
 
     <ListView
         android:id="@+id/lvCaches"
@@ -50,4 +51,14 @@
         android:text="i"
         app:layout_constraintStart_toStartOf="@+id/txtSearch"
         app:layout_constraintTop_toTopOf="@+id/txtSearch" />
+
+    <TextView
+        android:id="@+id/tvInfoCache"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="252dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
