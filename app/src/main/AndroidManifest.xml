@@ -19,10 +19,12 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-        <activity android:name=".activity.TopicActivity">
+        <activity android:name=".activity.TopicActivity"
+            android:parentActivityName=".activity.TopicActivity">
 
     </activity>
-        <activity android:name=".activity.CountryActivity">
+        <activity android:name=".activity.CountryActivity"
+            android:parentActivityName=".activity.CountryActivity">
 
         </activity>
     <activity android:name=".activity.IndicatorActivity"
@@ -30,7 +32,16 @@
 
     </activity>
         <activity android:name=".activity.GraphActivity"
-            android:parentActivityName=".activity.TopicActivity">
+            android:parentActivityName=".activity.GraphActivity">
+
+        </activity>
+        <activity android:name=".activity.CacheActivity"
+            android:parentActivityName=".activity.CacheActivity">
+
+        </activity>
+        <activity android:name=".activity.DescriptionActivity"
+            android:parentActivityName=".activity.DescriptionActivity"
+            android:theme="@style/AppTheme.CustomTheme">
 
         </activity>
     </application>
