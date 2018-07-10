@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/worldbank2"
-    android:visibility="visible"
-    tools:context=".activity.MainActivity">
+    android:background="@drawable/worldbank_landscape">
 
-
-    <Button
-        android:id="@+id/btnCountry"
-        android:layout_width="226dp"
-        android:layout_height="56dp"
+    <TextView
+        android:id="@+id/tvTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="220dp"
-        android:background="@drawable/rounded_button_blue"
-        android:drawableRight="@mipmap/countryblue"
-        android:text="Country"
-        android:textColor="#262D52"
-        android:textSize="20dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/champagne_limousines_bold"
+        android:text="WORLD BANK"
+        android:textColor="#ffffff"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnTopic"
+        android:id="@+id/btnData"
         android:layout_width="226dp"
         android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_button_white"
-        android:drawableRight="@mipmap/topic"
-        android:text="Topic"
+        android:drawableRight="@mipmap/offlineupload"
+        android:text="Offline Upload"
         android:textColor="#262D52"
         android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/btnCountry"
         app:layout_constraintTop_toBottomOf="@+id/btnCountry" />
 
@@ -42,41 +40,44 @@
         android:id="@+id/btnPrevImg"
         android:layout_width="226dp"
         android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_button_blue"
         android:drawableRight="@mipmap/savedimage"
         android:text="Saved   Image"
         android:textColor="#262D52"
         android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/btnTopic"
         app:layout_constraintTop_toBottomOf="@+id/btnTopic" />
 
     <Button
-        android:id="@+id/btnData"
+        android:id="@+id/btnTopic"
         android:layout_width="226dp"
         android:layout_height="56dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/rounded_button_white"
-        android:drawableRight="@mipmap/offlineupload"
-        android:text="Offline Upload"
+        android:drawableRight="@mipmap/topic"
+        android:text="Topic"
         android:textColor="#262D52"
         android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="@+id/btnPrevImg"
-        app:layout_constraintTop_toBottomOf="@+id/btnPrevImg" />
+        app:layout_constraintStart_toEndOf="@+id/btnCountry"
+        app:layout_constraintTop_toTopOf="@+id/btnCountry" />
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="WORLD BANK"
-        android:textSize="40dp"
-        android:textColor="#ffffff"
-        android:fontFamily="@font/champagne_limousines_bold"
+    <Button
+        android:id="@+id/btnCountry"
+        android:layout_width="226dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="300dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="216dp"
+        android:background="@drawable/rounded_button_blue"
+        android:drawableRight="@mipmap/countryblue"
+        android:text="Country"
+        android:textColor="#262D52"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintStart_toStartOf="@+id/tvIndicators"
         app:layout_constraintTop_toTopOf="parent" />
-
 </android.support.constraint.ConstraintLayout>

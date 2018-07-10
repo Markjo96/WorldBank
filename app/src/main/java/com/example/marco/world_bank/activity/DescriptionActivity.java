@@ -3,6 +3,7 @@ package com.example.marco.world_bank.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -51,7 +52,14 @@ public class DescriptionActivity extends Activity{
             getWindowManager().getDefaultDisplay().getMetrics(dm);
             int width = dm.widthPixels;
             int height = dm.heightPixels;
-            getWindow().setLayout((int) (width*0.9), (int) (height*0.5));
+            //changing the layout size depending on the orientation of the screen.
+            //this allows to see only a part of the layout when long clicking on
+            //a topic or an indicator button.
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                getWindow().setLayout((int) (width * 0.9), (int) (height * 0.5));
+            }else{
+                getWindow().setLayout((int) (width * 0.6), (int) (height * 0.8));
+            }
         }else{
             //insert image
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
