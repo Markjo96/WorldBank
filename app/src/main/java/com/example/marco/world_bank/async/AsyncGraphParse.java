@@ -41,7 +41,7 @@ public class AsyncGraphParse extends AsyncTask<String,Void,List<Graph>> {
             return list;
         }catch (JsonSyntaxException e){
             e.printStackTrace();
-            Toast.makeText(context,"JSON ERRATO",Toast.LENGTH_LONG).show();
+
         }
         return list;
 

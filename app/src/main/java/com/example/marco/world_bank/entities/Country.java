@@ -28,6 +28,27 @@ public class Country {
     private String longitude;
     private String latitude;
 
+    public Country(String id, String iso2Code, String name) {
+        this.id = id;
+        this.iso2Code = iso2Code;
+        this.name = name;
+    }
+
+    public Country(String id, String iso2Code, String name, RegionBean region,
+                   AdminregionBean adminregion, IncomeLevelBean incomeLevel,
+                   LendingTypeBean lendingType, String capitalCity, String longitude, String latitude) {
+        this.id = id;
+        this.iso2Code = iso2Code;
+        this.name = name;
+        this.region = region;
+        this.adminregion = adminregion;
+        this.incomeLevel = incomeLevel;
+        this.lendingType = lendingType;
+        this.capitalCity = capitalCity;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
     public static Country objectFromData(String str) {
 
         return new Gson().fromJson(str, Country.class);

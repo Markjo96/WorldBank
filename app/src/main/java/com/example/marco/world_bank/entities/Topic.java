@@ -6,6 +6,12 @@ public class Topic{
     private String value;
     private String sourceNote;
 
+    public Topic(String id, String value, String sourceNote) {
+        this.id = id;
+        this.value = value;
+        this.sourceNote = sourceNote;
+    }
+
     public Topic(String id) {
         this.id = id;
     }

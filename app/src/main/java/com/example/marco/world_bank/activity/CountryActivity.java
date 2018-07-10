@@ -1,7 +1,9 @@
 package com.example.marco.world_bank.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 
+import com.example.marco.world_bank.DatabaseHelper;
 import com.example.marco.world_bank.adapters.ListViewCountryAdapter;
 import com.example.marco.world_bank.Parse;
 import com.example.marco.world_bank.R;
@@ -32,8 +35,10 @@ public class CountryActivity extends Activity {
     int[] flag;
     Intent intent ;
     //Bundle bd;
-    List<Country> arraylist = new ArrayList<>();
+    List<Country> countryList = new ArrayList<>();
     Parse parse = new Parse(this);
+    private Context context = this;
+    private Activity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,15 +46,23 @@ public class CountryActivity extends Activity {
         setContentView(R.layout.country_activity);
 
         Intent intent = getIntent();
-
         int choice = intent.getIntExtra("CHOICE",0);
         String indicatorId = null;
+
         if (choice == 2){
             indicatorId = intent.getStringExtra("INDICATOR_ID");
         }
         list =  findViewById(R.id.lvCountries);
 
-        List<Country> countryList = null;
+        //Query Table Country
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        databaseHelper.open();
+        countryList = databaseHelper.getAllCounty();
+        databaseHelper.close();
+
+
+
+        /*List<Country> countryList = null;
         AsyncTask<Void,Void,List<Country>> asyncTask = new AsyncCountryParse(this);
         try {
             countryList = asyncTask.execute().get();
@@ -57,14 +70,19 @@ public class CountryActivity extends Activity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewCountryAdapter(this, countryList, choice,indicatorId);
+        adapter = new ListViewCountryAdapter(this, countryList, choice,indicatorId,activity);
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
         // Locate the EditText in listview_main.xml
         editsearch = (EditText) findViewById(R.id.txtSearch);
+
+
+
+
+
 
         // Capture Text in EditText
         editsearch.addTextChangedListener(new TextWatcher() {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,13 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
+import com.example.marco.world_bank.DatabaseHelper;
 import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.activity.CountryActivity;
+import com.example.marco.world_bank.activity.DescriptionActivity;
 import com.example.marco.world_bank.activity.GraphActivity;
+import com.example.marco.world_bank.activity.IndicatorActivity;
 import com.example.marco.world_bank.async.AsyncGraphParse;
 import com.example.marco.world_bank.async.AsyncQuery;
 import com.example.marco.world_bank.entities.Graph;
@@ -40,8 +46,11 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
     private ArrayList<Indicator> arraylist;
     private int choice;
     private String isoCode2;
+    private ProgressBar pbIndicator;
+    private Activity activity;
 
-    public ListViewIndicatorAdapter(Context context, List<Indicator> indicatorList,int choice,String isoCode2) {
+    public ListViewIndicatorAdapter(Context context, List<Indicator> indicatorList,int choice,
+                                    String isoCode2, Activity activity ) {
         mContext = context;
         this.indicatorList = indicatorList;
         //this.bd=bd;
@@ -50,6 +59,8 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
         this.arraylist.addAll(indicatorList);
         this.choice = choice;
         this.isoCode2 = isoCode2;
+        this.pbIndicator = pbIndicator;
+        this.activity = activity;
     }
 
     public class ViewHolder {
@@ -104,34 +115,34 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
                 } else{
 
                     String indicatorId = indicatorList.get(i).getId();
-                    Log.i("IO",isoCode2);
-                    Log.i("IO",indicatorId);
                     String uri = "http://api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
                             indicatorId+"?per_page=100&format=json";
                     String json = null;
 
 
                     //Query BD
-                    JsonDB jsonDB = new JsonDB(mContext);
-                    jsonDB.open();
-                    //jsonDB.deleteTable();
-                    JsonDao jsonDao = new JsonDao(uri,null);
-                    Cursor cursor = jsonDB.getJson(jsonDao);
+                    /*DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
+                    databaseHelper.open();
+                    JsonDao jsonDao = new JsonDao(uri,null,null,null);
+                    Cursor cursor = databaseHelper.getJson(jsonDao);
+
                     if (cursor.moveToNext()){
                         json = cursor.getString(cursor.getColumnIndex("json"));
                     }
+                    databaseHelper.close();
+
+
                     if(json == null ){
-                        AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
-                        try {
-                            json = asyncTask.execute(uri).get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
+
                         //Add json to DB
-                        jsonDao.setJson(json);
-                        jsonDB.addJson(jsonDao);
+                        DatabaseHelper databaseHelper1 = new DatabaseHelper(mContext);
+                        databaseHelper1.open();
+                        String coutryName = databaseHelper1.getCountryNameByIso(isoCode2);
+                        String indicatorName = databaseHelper.getNameIndicator(indicatorId);
+
+                        JsonDao jsonDao1 = new JsonDao(uri,coutryName,indicatorName,json);
+                        databaseHelper1.addJson(jsonDao1);
+                        databaseHelper1.close();
                     }
 
                     AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse(mContext);
@@ -143,15 +154,34 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
+                    //Check data from internet
+                    if (graphList == null){
+                        Toast.makeText(mContext,"GRAPH NOT AVALIABLE",Toast.LENGTH_SHORT).show();
+                        return;
+                    }*/
+
+
 
                     Intent intent = new Intent(mContext,GraphActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("GRAPH_DATA", (ArrayList<? extends Parcelable>)
-                            graphList);
-                    intent.putExtras(bundle);
+                    intent.putExtra("URI",uri);
+
                     System.out.println("Do graphics");
-                    mContext.startActivity(intent);
+                    activity.startActivityForResult(intent,1);
                 }
+            }
+        });
+
+
+
+        row.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View arg0) {
+                Intent intent = new Intent(mContext, DescriptionActivity.class);
+                intent.putExtra("NAME",indicatorList.get(i).getName());
+                intent.putExtra("NOTE",indicatorList.get(i).getSourceNote());
+                intent.putExtra("CHOICE",1);
+                mContext.startActivity(intent);
+                return true;
             }
         });
 

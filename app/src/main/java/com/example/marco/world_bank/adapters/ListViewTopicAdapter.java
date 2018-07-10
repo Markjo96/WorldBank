@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 import com.example.marco.world_bank.R;
+import com.example.marco.world_bank.activity.DescriptionActivity;
 import com.example.marco.world_bank.activity.IndicatorActivity;
 import com.example.marco.world_bank.async.AsyncIndicatorParse;
 import com.example.marco.world_bank.async.AsyncQuery;
@@ -89,31 +90,8 @@ public class ListViewTopicAdapter extends BaseAdapter {
             public void onClick(View arg0) {
 
                 String topicId = topicList.get(i).getId();
-                String uri = "http://api.worldbank.org/v2/topics/"+topicId+"/indicators?per_page=16700&format=json";
-                AsyncTask<String,Void,String> at1 = new AsyncQuery();
-                String json = null;
-                try {
-                    json = at1.execute(uri).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                //System.out.println(json);
-                AsyncTask<String,Void,List<Indicator>> at = new AsyncIndicatorParse(mContext);
-
-                List<Indicator> indicatorList = null;
-                try {
-                    indicatorList = at.execute(json).get();
-                } catch (InterruptedException|ExecutionException e) {
-                    e.printStackTrace();
-                }
-                //List<Indicator> indicatorList= parse.parseJsonIndicator();
-
                 Intent indicatorIntent = new Intent(mContext,IndicatorActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) indicatorList);
-                indicatorIntent.putExtras(bundle);
+                indicatorIntent.putExtra("TOPIC_ID",topicId);
                 indicatorIntent.putExtra("CHOICE",choice);
                 if (choice == 1){
                     indicatorIntent.putExtra("ISOCODE",isoCode2);
@@ -121,28 +99,24 @@ public class ListViewTopicAdapter extends BaseAdapter {
 
                 mContext.startActivity(indicatorIntent);
 
-                //return;
-                //topicList.get(i);
-                // Send single item click data to SingleItemView Class
-                //if (bd == null){
-                /*Intent intent = new Intent(mContext, TopicActivity.class);
-                intent.putExtra("name",
-                        (topicList.get(i).getName()));
-                mContext.startActivity(intent);*/
-                //System.out.println(topicList.get(i).getValue());
-                /*}
-                else{
-                    System.out.println("Do graphics");
-                }*/
+            }
+        });
+
+        row.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View arg0) {
+                Intent intent = new Intent(mContext, DescriptionActivity.class);
+                intent.putExtra("NAME",arraylist.get(i).getValue());
+                intent.putExtra("NOTE",arraylist.get(i).getSourceNote());
+                intent.putExtra("CHOICE",1);
+                mContext.startActivity(intent);
+                return true;
             }
         });
 
         return row;
     }
 
-    public final String getJSON(String uri){
-        return new AsyncQuery().execute(uri).toString();
-    }
 
     // Filter Class
     public void filter(String charText) {

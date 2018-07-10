@@ -5,11 +5,31 @@ import android.content.ContentValues;
 public class JsonDao {
 
     private String url;
+    private String countryName;
+    private String indicatorName;
     private String json;
 
-    public JsonDao(String url, String json) {
+    public JsonDao(String url, String countryName, String indicatorName, String json) {
         this.url = url;
+        this.countryName = countryName;
+        this.indicatorName = indicatorName;
         this.json = json;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getIndicatorName() {
+        return indicatorName;
+    }
+
+    public void setIndicatorName(String indicatorName) {
+        this.indicatorName = indicatorName;
     }
 
     public String getUrl() {

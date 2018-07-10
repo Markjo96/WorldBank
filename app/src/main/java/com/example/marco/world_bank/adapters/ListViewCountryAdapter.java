@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.example.marco.world_bank.DatabaseHelper;
 import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.activity.GraphActivity;
@@ -39,8 +41,10 @@ public class ListViewCountryAdapter extends BaseAdapter {
     private ArrayList<Country> arraylist;
     private int choice;
     private String indicatorId;
+    private Activity activity;
 
-    public ListViewCountryAdapter(Context context, List<Country> countryList, int choice,String indicatorId) {
+    public ListViewCountryAdapter(Context context, List<Country> countryList, int choice,
+                                  String indicatorId,Activity activity) {
         mContext = context;
         this.countryList = countryList;
         this.bd=bd;
@@ -49,6 +53,7 @@ public class ListViewCountryAdapter extends BaseAdapter {
         this.arraylist.addAll(countryList);
         this.choice = choice;
         this.indicatorId = indicatorId;
+        this.activity = activity;
 
     }
 
@@ -111,53 +116,11 @@ public class ListViewCountryAdapter extends BaseAdapter {
                     String isoCode2 = countryList.get(i).getIso2Code();
                     String uri = "http://api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
                             indicatorId+"?per_page=100&format=json";
-                    System.out.println("Isocode: "+isoCode2+", Id indicator: "+indicatorId);
-
-                    String json = null;
-                    //Query DB
-                    JsonDB jsonDB = new JsonDB(mContext);
-                    jsonDB.open();
-                    JsonDao jsonDao = new JsonDao(uri,null);
-                    Cursor cursor = jsonDB.getJson(jsonDao);
-                    if (cursor.moveToNext()){
-                        json = cursor.getString(cursor.getColumnIndex("json"));
-                    }
-
-                    if(json == null ){
-                        AsyncTask<String,Void,String> asyncTask = new AsyncQuery();
-
-                        try {
-                            json = asyncTask.execute(uri).get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-
-                        jsonDao.setJson(json);
-                        jsonDB.addJson(jsonDao);
-                    }
-
-
-                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse(mContext);
-                    List<Graph> graphList = null;
-                    try {
-                        graphList = asyncTaskParse.execute(json).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
 
                     Intent intent = new Intent(mContext,GraphActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("GRAPH_DATA", (ArrayList<? extends Parcelable>)
-                            graphList);
-                    intent.putExtras(bundle);
+                    intent.putExtra("URI",uri);
                     System.out.println("Do graphics");
-                    mContext.startActivity(intent);
-
-
+                    activity.startActivityForResult(intent,1);
                     System.out.println("Do graphics");
                 }
             }

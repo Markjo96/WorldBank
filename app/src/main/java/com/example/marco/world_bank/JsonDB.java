@@ -17,7 +17,6 @@ public class JsonDB extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "jsonTable";
 
 
-
     public JsonDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -59,18 +58,25 @@ public class JsonDB extends SQLiteOpenHelper {
     public Cursor getJson(JsonDao jsonDao){
         String url = jsonDao.getUrl();
         String columns[] = {"json"};
-        Cursor cursor = db.query(TABLE_NAME, columns,
-                "url = '"+url+"'",null,null,null,null);
+    Cursor cursor = db.query(TABLE_NAME, columns,
+            "url = '"+url+"'",null,null,null,null);
         return cursor;
-    }
+}
 
-    public void deleteAllJson(){
-        db.delete(TABLE_NAME,null,null);
-    }
+
 
     public void deleteTable(){
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
     }
 
 
+    public Cursor getAllJson() {
+        Cursor cursor = db.query(TABLE_NAME, new String[]{"url", "json"},null,
+                null,null,null,null);
+        return cursor;
+    }
+
+    public void deleteAllJson() {
+        db.delete(TABLE_NAME,null,null);
+    }
 }

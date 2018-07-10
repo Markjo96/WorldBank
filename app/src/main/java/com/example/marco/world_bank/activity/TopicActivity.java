@@ -1,6 +1,7 @@
 package com.example.marco.world_bank.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 
+import com.example.marco.world_bank.DatabaseHelper;
 import com.example.marco.world_bank.async.AsyncTopicParse;
 import com.example.marco.world_bank.adapters.ListViewTopicAdapter;
 import com.example.marco.world_bank.Parse;
@@ -30,7 +32,8 @@ public class TopicActivity extends Activity {
     EditText editsearch;
     String[] name;
     //Bundle bd;
-    List<Topic> arraylist = new ArrayList<>();
+    List<Topic> topicList = new ArrayList<>();
+    private Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class TopicActivity extends Activity {
         // Generate sample data
         list =  findViewById(R.id.lvTopics);
 
-        AsyncTask<Void,Void,List<Topic>> asyncTask = new AsyncTopicParse(this);
+        /*AsyncTask<Void,Void,List<Topic>> asyncTask = new AsyncTopicParse(this);
         List<Topic> topicList = null;
         try {
             topicList = asyncTask.execute().get();
@@ -55,7 +58,12 @@ public class TopicActivity extends Activity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
+        //db query
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        databaseHelper.open();
+        topicList = databaseHelper.getAllTopic();
+        databaseHelper.close();
 
 
 //

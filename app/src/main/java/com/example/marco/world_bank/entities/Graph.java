@@ -2,6 +2,7 @@ package com.example.marco.world_bank.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.renderscript.Float4;
 
 import com.google.gson.Gson;
 
@@ -22,14 +23,18 @@ public class Graph implements Parcelable {
     private CountryBean country;
     private String countryiso3code;
     private String date;
-    private int value;
+    private Float value;
     private String unit;
     private String obs_status;
     private int decimal;
 
     public Graph(Parcel source) {
         date = source.readString();
-        value = source.readInt();
+        value = source.readFloat();
+        country = new CountryBean();
+        indicator = new IndicatorBean();
+        country.value  = source.readString();
+        indicator.value = source.readString();
     }
 
     public static Graph objectFromData(String str) {
@@ -69,11 +74,11 @@ public class Graph implements Parcelable {
         this.date = date;
     }
 
-    public int getValue() {
+    public Float getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(Float value) {
         this.value = value;
     }
 
@@ -109,7 +114,13 @@ public class Graph implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(date);
-        dest.writeInt(value);
+        if (value == null){
+            dest.writeFloat(0);
+        }else{
+            dest.writeFloat(value);
+        }
+        dest.writeString(country.getValue());
+        dest.writeString(indicator.getValue());
     }
 
     public static class IndicatorBean {
