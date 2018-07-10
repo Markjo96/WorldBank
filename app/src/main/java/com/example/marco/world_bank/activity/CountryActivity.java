@@ -38,7 +38,7 @@ public class CountryActivity extends Activity {
     List<Country> countryList = new ArrayList<>();
     Parse parse = new Parse(this);
     private Context context = this;
-    private Activity activity;
+    private Activity activity = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

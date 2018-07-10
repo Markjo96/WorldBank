@@ -117,7 +117,6 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
                     String indicatorId = indicatorList.get(i).getId();
                     String uri = "http://api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
                             indicatorId+"?per_page=100&format=json";
-                    String json = null;
 
 
                     //Query BD
@@ -163,6 +162,8 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
 
 
                     Intent intent = new Intent(mContext,GraphActivity.class);
+                    intent.putExtra("ISO",isoCode2);
+                    intent.putExtra("INDICATOR_NAME",indicatorList.get(i).getName());
                     intent.putExtra("URI",uri);
 
                     System.out.println("Do graphics");

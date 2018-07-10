@@ -107,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public String getNameIndicator(String indicatorId) {
+    public String getNameIndicatorByIndicatorId(String indicatorId) {
         Cursor cursor = db.query(INDICATOR,new String[]{NAME_INDICATOR},ID_INDICATOR+"=?",
                 new String[]{indicatorId},null,null,null);
         String nameIndicator = null;
@@ -266,5 +266,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAllIndicator() {
         db.delete(INDICATOR,null,null);
+    }
+
+    public void deleteAllJson() {
+        db.delete(JSON_TABLE,null,null);
     }
 }

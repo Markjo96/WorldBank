@@ -119,7 +119,8 @@ public class ListViewCountryAdapter extends BaseAdapter {
 
                     Intent intent = new Intent(mContext,GraphActivity.class);
                     intent.putExtra("URI",uri);
-                    System.out.println("Do graphics");
+                    intent.putExtra("ISO",isoCode2);
+                    intent.putExtra("INDICATOR_ID",indicatorId);
                     activity.startActivityForResult(intent,1);
                     System.out.println("Do graphics");
                 }

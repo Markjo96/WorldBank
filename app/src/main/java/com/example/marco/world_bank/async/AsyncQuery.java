@@ -1,6 +1,7 @@
 package com.example.marco.world_bank.async;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -14,6 +15,7 @@ import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.ScreenShot;
 import com.example.marco.world_bank.entities.Graph;
 import com.example.marco.world_bank.entities.ImageDao;
+import com.example.marco.world_bank.entities.JsonDao;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -55,13 +57,20 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
     private LineChart chart;
     private Button btnGraph;
     private Button btnStop;
+    private String iso;
+    private String indicatorName;
+    private String indicatorId;
 
-    public AsyncQuery(Context context, ProgressBar pb, LineChart chart, Button btnGraph,Button btnStop) {
+    public AsyncQuery(Context context, ProgressBar pb, LineChart chart, Button btnGraph,
+                      Button btnStop,String iso,String indicatorId,String indicatorName) {
         this.context = context;
         this.pb = pb;
         this.chart = chart;
         this.btnGraph = btnGraph;
         this.btnStop = btnStop;
+        this.iso = iso;
+        this.indicatorId = indicatorId;
+        this.indicatorName = indicatorName;
     }
 
     @Override
@@ -76,54 +85,77 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
         StringBuilder stringBuilder = new StringBuilder();
 
         String uri = strings[0];
-        URL url = null;
-        try {
-            url = new URL(uri);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
-        HttpURLConnection urlConnection = null;
-        try {
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod(REQUEST_METOD);
-            urlConnection.setReadTimeout(READ_TIMEOUT);
-            urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-            urlConnection.setDoInput(true);
-            urlConnection.connect();
-            if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
-                System.out.println("CONNECTION LOST!");
-            }
-            if(!urlConnection.getResponseMessage().equals(200)){
-                System.out.println("CONNECTION LOST BOH!");
-            }
-            in = new InputStreamReader(urlConnection.getInputStream());
-            bin = new BufferedReader(in);
-            String inputLine;
-            while((inputLine=bin.readLine()) != null){
-                stringBuilder.append(inputLine);
-            }
-        } catch (SocketTimeoutException e){
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            urlConnection.disconnect();
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        databaseHelper.open();
+        JsonDao jsonDao = new JsonDao(uri,null,null,null);
+        Cursor cursor = databaseHelper.getJson(jsonDao);
+        String json = null;
+        if (cursor.moveToNext()){
+            json =cursor.getString(cursor.getColumnIndex("json"));
+        }
+        databaseHelper.close();
+
+        if (json==null){
+            URL url = null;
             try {
-                if (in != null) {
-                    in.close();
-                    bin.close();
-                }
-            } catch (IOException e) {
+                url = new URL(uri);
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+
+            HttpURLConnection urlConnection = null;
+            try {
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod(REQUEST_METOD);
+                urlConnection.setReadTimeout(READ_TIMEOUT);
+                urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setDoInput(true);
+                urlConnection.connect();
+                if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
+                    System.out.println("CONNECTION LOST!");
+                }
+                if(!urlConnection.getResponseMessage().equals(200)){
+                    System.out.println("CONNECTION LOST BOH!");
+                }
+                in = new InputStreamReader(urlConnection.getInputStream());
+                bin = new BufferedReader(in);
+                String inputLine;
+                while((inputLine=bin.readLine()) != null){
+                    stringBuilder.append(inputLine);
+                }
+            } catch (SocketTimeoutException e){
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
+                try {
+                    if (in != null) {
+                        in.close();
+                        bin.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println(stringBuilder.toString());
+            json =  stringBuilder.toString();
+
+            DatabaseHelper databaseHelper1 = new DatabaseHelper(context);
+            databaseHelper1.open();
+            String countryName = null;
+            if(indicatorId == null){
+                countryName = databaseHelper1.getCountryNameByIso(iso);
+            }else{
+                indicatorName = databaseHelper1.getNameIndicatorByIndicatorId(indicatorId);
+            }
+
+            JsonDao jsonDao1 = new JsonDao(uri,countryName,indicatorName,json);
+            databaseHelper1.addJson(jsonDao1);
+            databaseHelper1.close();
+
         }
-        System.out.println(stringBuilder.toString());
-
-
-        String json =  stringBuilder.toString();
-
-
 
 
         JSONArray jsonArray;
@@ -150,10 +182,23 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
     @Override
     protected void onPostExecute(List<Graph> result) {
         super.onPostExecute(result);
+        btnStop.setVisibility(View.GONE);
         ArrayList<Entry>  entries = new ArrayList<>();
 
+        if (result== null || result.isEmpty()){
+            Toast.makeText(context,"GRAPH NOT AVAILABLE",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         for (Graph data : graphs){
-            entries.add(new Entry(Float.parseFloat(data.getDate()),data.getValue()));
+            if (data.getValue()!=null && data.getDate()!=null){
+                entries.add(new Entry(Float.parseFloat(data.getDate()),data.getValue()));
+            }
+        }
+
+        if (entries== null || entries.isEmpty()){
+            Toast.makeText(context,"GRAPH NOT AVAILABLE",Toast.LENGTH_SHORT).show();
+            return;
         }
 
         Collections.sort(entries, new EntryXComparator());
@@ -168,7 +213,7 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
 
         btnGraph.setVisibility(View.VISIBLE);
         btnGraph.setOnClickListener(listener);
-        btnStop.setVisibility(View.GONE);
+
 
     }
     View.OnClickListener listener = new View.OnClickListener() {

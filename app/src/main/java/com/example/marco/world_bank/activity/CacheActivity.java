@@ -126,19 +126,11 @@ public class CacheActivity extends Activity {
     View.OnClickListener listenerClearCache = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            JsonDB jsonDB = new JsonDB(context);
-            jsonDB.open();
-            jsonDB.deleteAllJson();
+            DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.open();
+            databaseHelper.deleteAllJson();
+            databaseHelper.close();
 
-            /*Cursor cursor = jsonDB.getAllJson();
-
-            while (cursor.moveToNext()){
-                Cache cache = new Cache(cursor.getString(cursor.getColumnIndex("url")));
-                cacheList.add(cache);
-            }
-            adapter = new ListViewCacheAdapter(CacheActivity.this,cacheList,choice);
-            list.setAdapter(adapter);*/
-            jsonDB.close();
             Intent intent = new Intent(context,MainActivity.class);
             Toast.makeText(context,"Cache cleared!",Toast.LENGTH_SHORT).show();
             context.startActivity(intent);

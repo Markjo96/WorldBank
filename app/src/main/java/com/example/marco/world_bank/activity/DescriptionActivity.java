@@ -21,7 +21,7 @@ public class DescriptionActivity extends Activity{
     TextView tvIndicatorName;
     TextView tvIndicatorDescription;
     ImageView ivScreenShot;
-    private Context context;
+    private Context context = this;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

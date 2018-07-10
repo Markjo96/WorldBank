@@ -46,6 +46,9 @@ public class GraphActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         String uri = intent.getStringExtra("URI");
+        String isoCode = intent.getStringExtra("ISO");
+        String indicatorName = intent.getStringExtra("INDICATOR_NAME");
+        String indicatorId = intent.getStringExtra("INDICATOR_ID");
 
         chart = findViewById(R.id.chart);
         btnStop = findViewById(R.id.btnStop);
@@ -55,7 +58,8 @@ public class GraphActivity extends AppCompatActivity{
         btnGraph.setVisibility(View.GONE);
 
 
-        asyncTask = new AsyncQuery(context,pb,chart,btnGraph,btnStop);
+        asyncTask = new AsyncQuery(context,pb,chart,btnGraph,btnStop,isoCode,indicatorId,
+                indicatorName);
         asyncTask.execute(uri);
 
     }
