@@ -3,31 +3,20 @@ package com.example.marco.world_bank.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.marco.world_bank.DatabaseHelper1;
-import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.activity.DescriptionActivity;
 import com.example.marco.world_bank.activity.GraphActivity;
-import com.example.marco.world_bank.async.AsyncGraphParse;
 import com.example.marco.world_bank.entities.Cache;
 import com.example.marco.world_bank.R;
-import com.example.marco.world_bank.entities.Graph;
-import com.example.marco.world_bank.entities.ImageDao;
-import com.example.marco.world_bank.entities.JsonDao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class ListViewCacheAdapter extends BaseAdapter {
     Context mContext;

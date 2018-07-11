@@ -12,6 +12,7 @@
 
     <Button
         android:id="@+id/btnClearCache"
+
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
@@ -19,7 +20,7 @@
         android:background="@drawable/rounded_button_white"
         android:text="Clear Cache"
         android:textSize="10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#36a8ff"
-        android:hint="Search cache data"
+        android:hint="Search"
         android:inputType="textAutoComplete"
         android:textColor="#36a8ff"
         android:visibility="gone" />
@@ -40,10 +41,10 @@
         android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvInfoCache"
@@ -54,4 +55,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

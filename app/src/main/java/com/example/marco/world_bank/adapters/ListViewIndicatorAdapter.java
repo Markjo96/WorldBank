@@ -3,16 +3,11 @@ package com.example.marco.world_bank.adapters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +15,12 @@ import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
-import com.example.marco.world_bank.DatabaseHelper;
-import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.activity.CountryActivity;
 import com.example.marco.world_bank.activity.DescriptionActivity;
 import com.example.marco.world_bank.activity.GraphActivity;
-import com.example.marco.world_bank.activity.IndicatorActivity;
-import com.example.marco.world_bank.async.AsyncGraphParse;
-import com.example.marco.world_bank.async.AsyncQuery;
-import com.example.marco.world_bank.entities.Graph;
 import com.example.marco.world_bank.entities.Indicator;
-import com.example.marco.world_bank.entities.JsonDao;
 
 
 public class ListViewIndicatorAdapter extends BaseAdapter {

@@ -7,28 +7,56 @@
     android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/btnStop"
+    <ProgressBar
+        android:id="@+id/pb"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnGraph"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="224dp" />
+
+    <Button
+        android:id="@+id/btnStop"
+
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/rounded_button_white"
         android:text="Stop"
         android:visibility="gone" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <Button
         android:id="@+id/btnGraph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="11dp"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/btnReturn"
+        android:layout_marginEnd="114dp"
+        android:background="@drawable/rounded_button_white"
         android:text="Save Graph"
+        android:textSize="10dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/rounded_button_white"
+        android:text="Back Home"
+        android:textSize="10dp"
         android:visibility="gone" />
 </RelativeLayout>

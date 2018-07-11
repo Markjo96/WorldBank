@@ -8,10 +8,11 @@
 
     <Button
         android:id="@+id/btnShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_button_white"
         android:text="Share "
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,6 +20,7 @@
 
     <TextView
         android:id="@+id/tvDesName"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"

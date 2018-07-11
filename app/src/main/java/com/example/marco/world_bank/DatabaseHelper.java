@@ -234,8 +234,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
     public byte[] getImg(ImageDao imageDao) {
         String image_name = imageDao.getImage_name();
-        Cursor cursor = db.query(IMAGE,new String[]{KEY_IMAGE},null,null,
-                null,null,null);
+        Cursor cursor = db.query(IMAGE,new String[]{KEY_IMAGE},KEY_NAME+"=?",
+                new String []{image_name},null, null,null,null);
         byte[] bytes = new byte[0];
         if (cursor.moveToNext()){
             bytes = cursor.getBlob(cursor.getColumnIndex(KEY_IMAGE));

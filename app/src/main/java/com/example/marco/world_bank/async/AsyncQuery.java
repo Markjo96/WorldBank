@@ -57,12 +57,14 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
     private LineChart chart;
     private Button btnGraph;
     private Button btnStop;
+    private Button btnReturn;
     private String iso;
     private String indicatorName;
     private String indicatorId;
+    //LineChart chart1;
 
     public AsyncQuery(Context context, ProgressBar pb, LineChart chart, Button btnGraph,
-                      Button btnStop,String iso,String indicatorId,String indicatorName) {
+                      Button btnStop,Button btnReturn,String iso,String indicatorId,String indicatorName) {
         this.context = context;
         this.pb = pb;
         this.chart = chart;
@@ -71,6 +73,7 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
         this.iso = iso;
         this.indicatorId = indicatorId;
         this.indicatorName = indicatorName;
+        this.btnReturn = btnReturn;
     }
 
     @Override
@@ -119,7 +122,6 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setDoInput(true);
                 urlConnection.connect();
-                int contentLenght = urlConnection.getContentLength();
                 if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
                     System.out.println("CONNECTION LOST!");
                 }
@@ -129,10 +131,10 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
                 in = new InputStreamReader(urlConnection.getInputStream());
                 bin = new BufferedReader(in);
                 String inputLine;
-                int tot =0;
+                //int tot =0;
                 while((inputLine=bin.readLine()) != null){
-                    tot++;
-                    pb.setProgress(tot);
+                    //tot++;
+                    //pb.setProgress(tot);
                     stringBuilder.append(inputLine);
                 }
             } catch (SocketTimeoutException e){
@@ -161,6 +163,7 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
                 countryName = databaseHelper1.getCountryNameByIso(iso);
             }else{
                 indicatorName = databaseHelper1.getNameIndicatorByIndicatorId(indicatorId);
+                countryName = databaseHelper1.getCountryNameByIso(iso);
             }
 
             JsonDao jsonDao1 = new JsonDao(uri,countryName,indicatorName,json);
@@ -225,8 +228,12 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
         chart.setData(lineData);
         chart.invalidate();
 
+        btnReturn.setVisibility(View.VISIBLE);
         btnGraph.setVisibility(View.VISIBLE);
         btnGraph.setOnClickListener(listener);
+
+
+
 
     }
 

@@ -8,10 +8,12 @@
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    >
 
     <EditText
         android:id="@+id/txtSearch"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#36a8ff"

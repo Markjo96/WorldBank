@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -18,13 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marco.world_bank.DatabaseHelper;
-import com.example.marco.world_bank.DatabaseHelper1;
-import com.example.marco.world_bank.JsonDB;
 import com.example.marco.world_bank.R;
 import com.example.marco.world_bank.adapters.ListViewCacheAdapter;
 import com.example.marco.world_bank.entities.Cache;
-import com.example.marco.world_bank.entities.Country;
-import com.example.marco.world_bank.entities.Indicator;
 
 import java.util.ArrayList;
 import java.util.List;

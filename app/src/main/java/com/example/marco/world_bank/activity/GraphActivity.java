@@ -34,6 +34,7 @@ public class GraphActivity extends AppCompatActivity{
     private LineChart chart;
     private Button btnGraph;
     private Button btnStop;
+    private Button btnReturn;
     private List<Graph> arraylist = new ArrayList<>();
     private ProgressBar pb;
     private Context context = this;
@@ -51,6 +52,8 @@ public class GraphActivity extends AppCompatActivity{
         String indicatorId = intent.getStringExtra("INDICATOR_ID");
 
         chart = findViewById(R.id.chart);
+        btnReturn = findViewById(R.id.btnReturn);
+        btnReturn.setOnClickListener(listenerBtnReturn);
         btnStop = findViewById(R.id.btnStop);
         btnStop.setVisibility(View.VISIBLE);
         btnStop.setOnClickListener(listenerBtnStop);
@@ -59,7 +62,7 @@ public class GraphActivity extends AppCompatActivity{
         pb = findViewById(R.id.pb);
 
 
-        asyncTask = new AsyncQuery(context,pb,chart,btnGraph,btnStop,isoCode,indicatorId,
+        asyncTask = new AsyncQuery(context,pb,chart,btnGraph,btnStop,btnReturn,isoCode,indicatorId,
                 indicatorName);
         asyncTask.execute(uri);
 
@@ -69,10 +72,25 @@ public class GraphActivity extends AppCompatActivity{
     View.OnClickListener listenerBtnStop = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            asyncTask.cancel(true);
-            int requestCode = 0;
-            Toast.makeText(context,"Graph request stopped!",Toast.LENGTH_SHORT).show();
-            finishActivity(requestCode);
+            if (! asyncTask.isCancelled()){
+                asyncTask.cancel(true);
+                int requestCode = 0;
+                Toast.makeText(context,"Graph request stopped!",Toast.LENGTH_SHORT).show();
+                pb.setVisibility(View.GONE);
+                btnReturn.setVisibility(View.VISIBLE);
+                //finishActivity(requestCode);
+                finish();
+            }else{
+                Toast.makeText(context,"Graph request already stopped!",Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    View.OnClickListener listenerBtnReturn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context,MainActivity.class);
+            context.startActivity(intent);
         }
     };
 

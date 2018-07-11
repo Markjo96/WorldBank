@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -70,7 +71,15 @@ public class DescriptionActivity extends Activity{
             getWindowManager().getDefaultDisplay().getMetrics(dm);
             int width = dm.widthPixels;
             int height = dm.heightPixels;
-            getWindow().setLayout((int) (width*0.9), (int) (height*0.5));
+
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                getWindow().setLayout((int) (width*0.9), (int) (height*0.5));
+            }else{
+                getWindow().setLayout((int) (width*0.6), (int) (height*0.9));
+            }
+
+
+
         }else{
             //insert image
             btnShare.setVisibility(View.VISIBLE);
