@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class DescriptionActivity extends Activity{
+    //Decalare variables
     private static final int REQUEST =  1;
     private TextView tvIndicatorName;
     private TextView tvIndicatorDescription;
@@ -53,16 +54,15 @@ public class DescriptionActivity extends Activity{
         ivScreenShot.setVisibility(View.GONE);
         btnShare = findViewById(R.id.btnShare);
 
-        //1 description, 2 image view
+
         int choice = getIntent().getIntExtra("CHOICE",0);
         String keyName = getIntent().getStringExtra("KEY_NAME");
         String name = getIntent().getStringExtra("NAME");
         String note = getIntent().getStringExtra("NOTE");
 
 
-
+        //Verify choice value. If choice=1 cache activity is used to show the already done searches.
         if (choice==1){
-            //description
             tvIndicatorName.setText(name);
             tvIndicatorDescription.setText(note);
 
@@ -81,7 +81,7 @@ public class DescriptionActivity extends Activity{
 
 
         }else{
-            //insert image
+            //if choice=2 the cache activity is used to show the saved images.
             btnShare.setVisibility(View.VISIBLE);
             btnShare.setOnClickListener(listenerShare);
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
@@ -99,8 +99,10 @@ public class DescriptionActivity extends Activity{
     View.OnClickListener listenerShare = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //If build version is less or equal to 22 it not necessary to ask the permission to user.
             if (Build.VERSION.SDK_INT >= 23) {
                 String[] PERMISSIONS = {android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                //Check if the permission has been already accepted
                 if (!hasPermissions(context, PERMISSIONS)) {
                     ActivityCompat.requestPermissions((Activity) context, PERMISSIONS, REQUEST );
                 } else {
@@ -133,6 +135,7 @@ public class DescriptionActivity extends Activity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST: {
+                //If permissions has been accepted can share the image.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     shareImg();
                 } else {
@@ -143,6 +146,9 @@ public class DescriptionActivity extends Activity{
 
     }
 
+    /**
+     * This method implements the steps to share image.
+     */
     public void shareImg(){
         View content = findViewById(R.id.ivScreenShot);
         content.setDrawingCacheEnabled(true);

@@ -43,6 +43,7 @@ public class TopicActivity extends Activity {
         Intent intent = getIntent();
         int choice = intent.getIntExtra("CHOICE",0);
         String isoCode2 = null;
+        //Verufy choice value, if choice=1 is identified this path country->topic->indicator
         if (choice == 1){
             isoCode2 = intent.getStringExtra("ISOCODE");
         }
