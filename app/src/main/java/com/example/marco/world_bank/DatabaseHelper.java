@@ -271,4 +271,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllJson() {
         db.delete(JSON_TABLE,null,null);
     }
+
+    public void deleteAllImage() {
+        db.delete(IMAGE,null,null);
+    }
 }

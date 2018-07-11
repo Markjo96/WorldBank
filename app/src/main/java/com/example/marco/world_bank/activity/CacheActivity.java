@@ -1,7 +1,9 @@
 package com.example.marco.world_bank.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -47,14 +49,15 @@ public class CacheActivity extends Activity {
         tvInfoCache = findViewById(R.id.tvInfoCache);
         list =  findViewById(R.id.lvCaches);
         tvInfoCache.setVisibility(View.INVISIBLE);
+        editsearch = findViewById(R.id.txtSearch);
+        editsearch.setVisibility(View.VISIBLE);
+        btnClearCache = findViewById(R.id.btnClearCache);
+        btnClearCache.setVisibility(View.VISIBLE);
+        btnClearCache.setOnClickListener(listenerClearCache);
 
         Intent  intent = getIntent();
         choice = intent.getIntExtra("CHOICE",0);
-        if (choice == 2){
-            btnClearCache = findViewById(R.id.btnClearCache);
-            btnClearCache.setVisibility(View.VISIBLE);
-            btnClearCache.setOnClickListener(listenerClearCache);
-        }
+
 
 
 
@@ -75,6 +78,7 @@ public class CacheActivity extends Activity {
 
         //controllo che la lista non sia vuota
         if (cacheList.isEmpty()){
+            editsearch.setVisibility(View.GONE);
             tvInfoCache.setVisibility(View.VISIBLE);
             tvInfoCache.setText("No item available!");
             //nascondi edit text
@@ -88,7 +92,7 @@ public class CacheActivity extends Activity {
 
         // Locate the EditText in listview_main.xml
 
-        editsearch = findViewById(R.id.txtSearch);
+
 
 
 
@@ -126,14 +130,35 @@ public class CacheActivity extends Activity {
     View.OnClickListener listenerClearCache = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DatabaseHelper databaseHelper = new DatabaseHelper(context);
-            databaseHelper.open();
-            databaseHelper.deleteAllJson();
-            databaseHelper.close();
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(context);
+            builder.setTitle("CLEAR CACHE").
+                    setMessage("Do you want delete all record definitively?").
+                    setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DatabaseHelper databaseHelper = new DatabaseHelper(context);
+                            databaseHelper.open();
+                            if (choice == 2){
+                                databaseHelper.deleteAllJson();
+                            }else{
+                                databaseHelper.deleteAllImage();
+                            }
 
-            Intent intent = new Intent(context,MainActivity.class);
-            Toast.makeText(context,"Cache cleared!",Toast.LENGTH_SHORT).show();
-            context.startActivity(intent);
+                            databaseHelper.close();
+
+                            Intent intent = new Intent(context,MainActivity.class);
+                            Toast.makeText(context,"Cache cleared!",Toast.LENGTH_SHORT).show();
+                            context.startActivity(intent);
+                        }
+                    }).
+                    setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
+
         }
     };
 

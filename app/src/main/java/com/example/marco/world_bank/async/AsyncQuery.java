@@ -47,8 +47,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
     public static  String REQUEST_METOD = "GET";
-    public static final int READ_TIMEOUT = 3000;
-    public static final int CONNECTION_TIMEOUT = 3000;
+    public static final int READ_TIMEOUT = 15000;
+    public static final int CONNECTION_TIMEOUT = 15000;
     private InputStreamReader in;
     private BufferedReader bin;
     private List<Graph> graphs = new ArrayList<>();
@@ -74,6 +74,11 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
     }
 
     @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
     protected void onPreExecute() {
         super.onPreExecute();
     }
@@ -81,6 +86,8 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
 
     @Override
     protected List<Graph> doInBackground(String... strings) {
+
+        pb.setVisibility(View.VISIBLE);
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -112,6 +119,7 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setDoInput(true);
                 urlConnection.connect();
+                int contentLenght = urlConnection.getContentLength();
                 if(urlConnection.getResponseCode() != HttpsURLConnection.HTTP_OK){
                     System.out.println("CONNECTION LOST!");
                 }
@@ -121,10 +129,14 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
                 in = new InputStreamReader(urlConnection.getInputStream());
                 bin = new BufferedReader(in);
                 String inputLine;
+                int tot =0;
                 while((inputLine=bin.readLine()) != null){
+                    tot++;
+                    pb.setProgress(tot);
                     stringBuilder.append(inputLine);
                 }
             } catch (SocketTimeoutException e){
+                Toast.makeText(context,"INTERNET NOT AVAILABLE",Toast.LENGTH_SHORT).show();
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -182,7 +194,9 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
     @Override
     protected void onPostExecute(List<Graph> result) {
         super.onPostExecute(result);
+        pb.setVisibility(View.GONE);
         btnStop.setVisibility(View.GONE);
+
         ArrayList<Entry>  entries = new ArrayList<>();
 
         if (result== null || result.isEmpty()){
@@ -214,8 +228,8 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
         btnGraph.setVisibility(View.VISIBLE);
         btnGraph.setOnClickListener(listener);
 
-
     }
+
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -223,7 +237,6 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
             String nameCountry = graphs.get(0).getCountry().getValue();
             String nameIndicator = graphs.get(0).getIndicator().getValue();
             String image_name = nameCountry+"^"+nameIndicator;
-
 
             Bitmap bitmap = chart.getChartBitmap();
             byte[] listByte = ScreenShot.getBytes(bitmap);
@@ -241,5 +254,6 @@ public class AsyncQuery extends AsyncTask<String,Void,List<Graph>> {
 
         }
     };
+
 
 }

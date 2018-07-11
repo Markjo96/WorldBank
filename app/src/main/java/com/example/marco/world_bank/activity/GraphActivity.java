@@ -56,6 +56,7 @@ public class GraphActivity extends AppCompatActivity{
         btnStop.setOnClickListener(listenerBtnStop);
         btnGraph = findViewById(R.id.btnGraph);
         btnGraph.setVisibility(View.GONE);
+        pb = findViewById(R.id.pb);
 
 
         asyncTask = new AsyncQuery(context,pb,chart,btnGraph,btnStop,isoCode,indicatorId,
