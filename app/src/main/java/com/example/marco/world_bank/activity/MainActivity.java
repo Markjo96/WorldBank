@@ -61,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*Param choice is used in two different contexts. The first context is given by two possible paths :country->topic->indicator
+    or topic->indicator->country. If choice=1 it is identified first path, else it is identified second path. So choice=1 is associated
+    to btnCountry and choice=2 is associated to btnTopic.
+    The second context identifies the two different ways to use cache activity. In first way the cache activity is used
+    to show the saved images. In the second way the cache activity is used to show the already done searches. So choice=1
+    is associated to btnPrevImg else it is associated to btnData.
+     */
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

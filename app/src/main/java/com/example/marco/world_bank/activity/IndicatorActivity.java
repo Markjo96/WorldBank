@@ -48,7 +48,7 @@ public class IndicatorActivity extends Activity {
         String isoCode2 = getIntent().getStringExtra("ISOCODE");
         String topicId = getIntent().getStringExtra("TOPIC_ID");
 
-        //dbquery
+        //Select all Indicators from topic id previously passed from topic activity
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
         databaseHelper.open();
         indicatorList = databaseHelper.getIndicatorByTopicId(topicId);
@@ -64,7 +64,6 @@ public class IndicatorActivity extends Activity {
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
-        // Locate the EditText in listview_main.xml
         editsearch =  findViewById(R.id.txtSearch);
 
         // Capture Text in EditText

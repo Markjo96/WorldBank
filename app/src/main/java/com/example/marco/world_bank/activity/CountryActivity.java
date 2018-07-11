@@ -40,6 +40,10 @@ public class CountryActivity extends Activity {
     private Context context = this;
     private Activity activity = this;
 
+    /**
+     * Allows to take a list of countries and put it, through ListViewCountryadapter, in country_activity's list view.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +52,7 @@ public class CountryActivity extends Activity {
         Intent intent = getIntent();
         int choice = intent.getIntExtra("CHOICE",0);
         String indicatorId = null;
-
+      // Verify choice value, if choice=2 is identified this path topic->indicator->country
         if (choice == 2){
             indicatorId = intent.getStringExtra("INDICATOR_ID");
         }
