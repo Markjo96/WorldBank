@@ -72,9 +72,12 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
         ViewHolder holder;
         View row = null;
         view = null;
+        //Using two views so that the listview doesn't loose memory
+        //of the single item layout when scrolling.
         row = view;
         if (view == null) {
             holder = new ViewHolder();
+            //Inflating the listview so that items have a given layout.
             row = inflater.inflate(R.layout.custom_listview_white, null);
             // Locate the TextViews in listview_item.xml
             holder.name =  row.findViewById(R.id.tvCountryName);
@@ -84,7 +87,6 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
         }
         // Set the results into TextViews
         holder.name.setText(indicatorList.get(i).getName());
-        // Listen for ListView Item Click
 
 
 
@@ -92,78 +94,44 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View arg0) {
-                // Send single item click data to SingleItemView Class
+                /* When clicking on a item of the listview, if the choice value
+                 * is 2, the app goes to the CountryActivity.
+                 */
                 if (choice == 2){
+                    //Opening a new Intent passing the indicator's id and the choice's value.
                     Intent intent = new Intent(mContext, CountryActivity.class);
                     intent.putExtra("INDICATOR_ID", indicatorList.get(i).getId());
                     intent.putExtra("CHOICE",2);
                     mContext.startActivity(intent);
-                    System.out.println("Indicator activity");
+                    /* When clicking on a item of the listview, if the choice value
+                     * is 1, the app goes to the GraphActivity.
+                     */
                 } else{
 
                     String indicatorId = indicatorList.get(i).getId();
                     String uri = "http://api.worldbank.org/v2/countries/"+isoCode2+"/indicators/"+
                             indicatorId+"?per_page=100&format=json";
-
-
-                    //Query BD
-                    /*DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
-                    databaseHelper.open();
-                    JsonDao jsonDao = new JsonDao(uri,null,null,null);
-                    Cursor cursor = databaseHelper.getJson(jsonDao);
-
-                    if (cursor.moveToNext()){
-                        json = cursor.getString(cursor.getColumnIndex("json"));
-                    }
-                    databaseHelper.close();
-
-
-                    if(json == null ){
-
-                        //Add json to DB
-                        DatabaseHelper databaseHelper1 = new DatabaseHelper(mContext);
-                        databaseHelper1.open();
-                        String coutryName = databaseHelper1.getCountryNameByIso(isoCode2);
-                        String indicatorName = databaseHelper.getNameIndicator(indicatorId);
-
-                        JsonDao jsonDao1 = new JsonDao(uri,coutryName,indicatorName,json);
-                        databaseHelper1.addJson(jsonDao1);
-                        databaseHelper1.close();
-                    }
-
-                    AsyncTask<String,Void,List<Graph>> asyncTaskParse = new AsyncGraphParse(mContext);
-                    List<Graph> graphList = null;
-                    try {
-                        graphList = asyncTaskParse.execute(json).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    //Check data from internet
-                    if (graphList == null){
-                        Toast.makeText(mContext,"GRAPH NOT AVALIABLE",Toast.LENGTH_SHORT).show();
-                        return;
-                    }*/
-
-
-
+                    //Opening a new Intent passing the created url, the country's isocode
+                    //and the indicator's name.
                     Intent intent = new Intent(mContext,GraphActivity.class);
                     intent.putExtra("ISO",isoCode2);
                     intent.putExtra("INDICATOR_NAME",indicatorList.get(i).getName());
                     intent.putExtra("URI",uri);
 
-                    System.out.println("Do graphics");
                     activity.startActivityForResult(intent,1);
                 }
             }
         });
 
-
-
+        /*
+         * When long clicking on a item of the listview, the app goes
+         * to the DescriptionActivity.
+         */
         row.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View arg0) {
+                //Opening a new Intent passing the indicator's name, its description
+                //and the choice's value.
                 Intent intent = new Intent(mContext, DescriptionActivity.class);
                 intent.putExtra("NAME",indicatorList.get(i).getName());
                 intent.putExtra("NOTE",indicatorList.get(i).getSourceNote());
@@ -176,13 +144,20 @@ public class ListViewIndicatorAdapter extends BaseAdapter {
         return row;
     }
 
-    // Filter Class
+    //Method to implement the autocomplete search
     public void filter(String charText) {
+        //Using toLowerCase allows the user to search either
+        //in lower case and in upper case.
         charText = charText.toLowerCase(Locale.getDefault());
         indicatorList.clear();
+        //If the user has not written in the search bar, the listview
+        //is full.
         if (charText.length() == 0) {
             indicatorList.addAll(arraylist);
         } else {
+            //If the user is writing, it checks if the word written
+            //is contained in one or more of the listview's items,
+            //searching by the indicator's name.
             for (Indicator indicator : arraylist) {
                 if (indicator.getName().toLowerCase(Locale.getDefault())
                         .contains(charText)) {

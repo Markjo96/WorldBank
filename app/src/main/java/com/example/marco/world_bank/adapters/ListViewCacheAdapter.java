@@ -63,17 +63,21 @@ public class ListViewCacheAdapter extends BaseAdapter {
         ViewHolder holder;
         View row = null;
         view = null;
+        //Inflating the listview so that items in even position have a certain layout
+        //and the others in odd position have on other layout.
         row = view;
         if (view == null) {
             holder = new ViewHolder();
+            //Inflating the listview so that items in even position have a certain layout
+            //and the others in odd position have on other layout.
             row = inflater.inflate(i % 2 == 0 ? R.layout.custom_listview_blue : R.layout.custom_listview_white, null);
-            // Locate the TextViews in listview_item.xml
-            // Locate the ImageView in listview_item.xml
             holder.name = row.findViewById(R.id.tvCountryName);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
         }
+        //Setting the text into listview's item textview with country's and
+        //indicator's names.
         String display = cacheList.get(i).getCountry().getName()+", "+cacheList.get(i).
                 getIndicator().getName();
         holder.name.setText(display);
@@ -82,35 +86,31 @@ public class ListViewCacheAdapter extends BaseAdapter {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
+                 * When clicking on a item of the listview, if the choice value
+                 * is 2, the app goes to the GraphActivity.
+                 */
                 if (choice == 2){
+                    //Opening a new Intent passing the url.
                     String uri = cacheList.get(i).getUrl();
                     Intent intent = new Intent(mContext,GraphActivity.class);
                     intent.putExtra("URI",uri);
                     activity.startActivityForResult(intent,1);
 
                 }else{
-
+                    /*
+                     * When clicking on a item of the listview, if the choice value
+                     * is 1, the app goes to the DescriptionActivity.
+                     */
                     Intent intent = new Intent(mContext,DescriptionActivity.class);
+                    //The keyName is a string used in the Db for saved images,
+                    //the separator '^' is necessary to be able to obtain country's
+                    //and indicator's name coming back from Db.
                     String keyName = cacheList.get(i).getCountry().getName()+"^"+
                             cacheList.get(i).getIndicator().getName();
+                    //Opening a new Intent passing the keyName.
                     intent.putExtra("KEY_NAME",keyName);
                     mContext.startActivity(intent);
-
-
-                    /*String image_name = cacheList.get(i).getCountry().getName() +"^"+cacheList.
-                            get(i).getIndicator().getName();
-                    ImageDao imageDao = new ImageDao(image_name, null);
-                    DatabaseHelper1 databaseHelper1 = new DatabaseHelper1(mContext);
-                    databaseHelper1.open();
-                    Cursor cursor = databaseHelper1.getImg(imageDao);
-                    byte[] bytes = new byte[0];
-                    if (cursor.moveToNext()){
-                        bytes = cursor.getBlob(cursor.getColumnIndex("image_data"));
-                    }
-
-                    Intent intent = new Intent(mContext, DescriptionActivity.class);
-                    intent.putExtra("BYTES",bytes);
-                    mContext.startActivity(intent);*/
 
 
                 }
@@ -120,13 +120,20 @@ public class ListViewCacheAdapter extends BaseAdapter {
         return row;
     }
 
-    // Filter Class
-    public void filterSavedImg(String charText) {
+    //Method to implement the autocomplete search.
+    public void filter(String charText) {
+        //Using toLowerCase allows the user to search either
+        //in lower case and in upper case.
         charText = charText.toLowerCase(Locale.getDefault());
         cacheList.clear();
+        //If the user has not written in the search bar, the listview
+        //is full.
         if (charText.length() == 0) {
             cacheList.addAll(arraylist);
         } else {
+            //If the user is writing, it checks if the word written
+            //is contained in one or more of the listview's items,
+            //searching by country's or indicator's names.
             for (Cache cache : arraylist) {
                 if (cache.getCountry().getName().toLowerCase(Locale.getDefault()).
                         contains(charText) || cache.getIndicator().getName().
@@ -137,20 +144,5 @@ public class ListViewCacheAdapter extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
-
-    public void filterOfflineUpload(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        cacheList.clear();
-        if (charText.length() == 0) {
-            cacheList.addAll(arraylist);
-        } else {
-            for (Cache cache : arraylist) {
-                if (cache.getUrl().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    cacheList.add(cache);
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
+    
 }

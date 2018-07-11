@@ -36,10 +36,10 @@ public class ListViewTopicAdapter extends BaseAdapter {
     private int choice;
     private String isoCode2;
 
+
     public ListViewTopicAdapter(Context context, List<Topic> topicList, int choice,String isoCode2) {
         this.mContext = context;
         this.topicList = topicList;
-        //this.bd=bd;
         this.inflater = LayoutInflater.from(mContext);
         this.arraylist = new ArrayList<Topic>();
         this.arraylist.addAll(topicList);
@@ -69,9 +69,13 @@ public class ListViewTopicAdapter extends BaseAdapter {
         ViewHolder holder;
         View row = null;
         view = null;
+        //Using two views so that the listview doesn't loose memory
+        //of the single item layout when scrolling.
         row = view;
         if (view == null) {
             holder = new ViewHolder();
+            //Inflating the listview so that items in even position have a certain layout
+            //and the others in odd position have on other layout.
             row = inflater.inflate(i % 2 == 0 ? R.layout.custom_listview_white : R.layout.custom_listview_blue, null);
             // Locate the TextViews in listview_item.xml
             holder.name = (TextView) row.findViewById(R.id.tvCountryName);
@@ -85,14 +89,21 @@ public class ListViewTopicAdapter extends BaseAdapter {
 
 
         row.setOnClickListener(new OnClickListener() {
-
+            /*
+             * When clicking on a item of the listview, the app goes to
+             * the IndicatorActivity.
+             */
             @Override
             public void onClick(View arg0) {
 
                 String topicId = topicList.get(i).getId();
+                //Opening a new Intent passing the topic's id and the
+                //value of the choice.
                 Intent indicatorIntent = new Intent(mContext,IndicatorActivity.class);
                 indicatorIntent.putExtra("TOPIC_ID",topicId);
                 indicatorIntent.putExtra("CHOICE",choice);
+                //If the route is from country to indicator, it passes the
+                //isoCode2, that is needed for the final query.
                 if (choice == 1){
                     indicatorIntent.putExtra("ISOCODE",isoCode2);
                 }
@@ -102,9 +113,16 @@ public class ListViewTopicAdapter extends BaseAdapter {
             }
         });
 
+        /*
+        * When long clicking on a item of the listview, the app goes
+        * to the DescriptionActivity.
+        */
+
         row.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View arg0) {
+                //Opening a new Intent passing the topic's name, its description
+                //and the choice's value.
                 Intent intent = new Intent(mContext, DescriptionActivity.class);
                 intent.putExtra("NAME",arraylist.get(i).getValue());
                 intent.putExtra("NOTE",arraylist.get(i).getSourceNote());
@@ -118,13 +136,21 @@ public class ListViewTopicAdapter extends BaseAdapter {
     }
 
 
-    // Filter Class
+
+    //Method to implement the autocomplete search
     public void filter(String charText) {
+        //Using toLowerCase allows the user to search either
+        //in lower case and in upper case.
         charText = charText.toLowerCase(Locale.getDefault());
         topicList.clear();
+        //If the user has not written in the search bar, the listview
+        //is full.
         if (charText.length() == 0) {
             topicList.addAll(arraylist);
         } else {
+            //If the user is writing, it checks if the word written
+            //is contained in one or more of the listview's items,
+            //searching by the topic's name.
             for (Topic topic : arraylist) {
                 if (topic.getValue().toLowerCase(Locale.getDefault())
                         .contains(charText)) {
