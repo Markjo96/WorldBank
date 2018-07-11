@@ -61,31 +61,31 @@ public class GraphActivity extends AppCompatActivity{
         btnGraph.setVisibility(View.GONE);
         pb = findViewById(R.id.pb);
 
-
+        //set up and execute asyncTask
         asyncTask = new AsyncQuery(context,pb,chart,btnGraph,btnStop,btnReturn,isoCode,indicatorId,
                 indicatorName);
         asyncTask.execute(uri);
 
     }
 
-
+   /*
+   The Async Task thread is killed if the BtnStop is pressed
+    */
     View.OnClickListener listenerBtnStop = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (! asyncTask.isCancelled()){
                 asyncTask.cancel(true);
-                int requestCode = 0;
                 Toast.makeText(context,"Graph request stopped!",Toast.LENGTH_SHORT).show();
                 pb.setVisibility(View.GONE);
                 btnReturn.setVisibility(View.VISIBLE);
-                //finishActivity(requestCode);
                 finish();
             }else{
                 Toast.makeText(context,"Graph request already stopped!",Toast.LENGTH_SHORT).show();
             }
         }
     };
-
+    //Return to main activity
     View.OnClickListener listenerBtnReturn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
