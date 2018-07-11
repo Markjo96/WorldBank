@@ -60,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    /*public void gotoCountrySearchView(View view) {
-        Intent i = new Intent(this,
-                CountryActivity.class);
-        startActivity(i);}*/
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
