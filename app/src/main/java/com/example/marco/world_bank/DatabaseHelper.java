@@ -182,6 +182,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 new String[]{image_name},null,null,null);
         if (cursor.moveToNext()){
             if(cursor.getString(cursor.getColumnIndex(KEY_NAME)).equals(image_name)){
+                cursor.close();
                 return true;
             }
         }

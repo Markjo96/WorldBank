@@ -30,7 +30,8 @@
         android:backgroundTint="#36a8ff"
         android:hint="Search cache data"
         android:inputType="textAutoComplete"
-        android:textColor="#36a8ff" />
+        android:textColor="#36a8ff"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/lvCaches"

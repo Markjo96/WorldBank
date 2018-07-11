@@ -34,5 +34,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.+'
     implementation 'com.jayway.jsonpath:json-path:2.3.0'
-    compile  'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    implementation  'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 }
