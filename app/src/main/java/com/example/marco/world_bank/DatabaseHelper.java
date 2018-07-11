@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import com.example.marco.world_bank.entities.Cache;
 import com.example.marco.world_bank.entities.Country;
@@ -16,10 +16,16 @@ import com.example.marco.world_bank.entities.Topic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
-    private static String DB_PATH = "/data/data/com.example.marco.world_bank/databases/";
+/**
+ * Using the SQLiteAssetHelper library allows to
+ * use an existing SQLite Database, that is WorldBankDB
+ * in this case.
+ */
+public class DatabaseHelper extends SQLiteAssetHelper {
+    //private static String DB_PATH = "/data/data/com.example.marco.world_bank/databases/";
     private SQLiteDatabase db;
-    private static final String DB_NAME = "WorldBankDB";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DB_NAME = "WorldBankDB.db";
     //Table name
     private static final String COUNTRY = "Country";
     private static final String TOPIC = "Topic";
@@ -54,20 +60,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_INDICATOR = "CREATE TABLE "+INDICATOR+" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+ID_INDICATOR+" TEXT, "+NAME_INDICATOR+" TEXT, "+SOURCE_INDICATOR+" TEXT, "+ID_TOPIC_INDICATOR+" TEXT)";
     private static final String CREATE_TABLE_JSON_TABLE = "CREATE TABLE "+JSON_TABLE+" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+URL+" TEXT, "+NAME_COUNTRY_JSON+" TEXT, "+NAME_INDICATOR_JSON+" TEXT, "+JSON+" TEXT)";
     private static final String CREATE_TABLE_IMAGE ="CREATE TABLE "+IMAGE+" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_NAME+" TEXT, "+KEY_IMAGE+" BLOB)";
-    private static final int DATABASE_VERSION = 1;
+
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DATABASE_VERSION);
     }
 
-    @Override
+    /*@Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_COUNTRY);
         db.execSQL(CREATE_TABLE_TOPIC);
         db.execSQL(CREATE_TABLE_INDICATOR);
         db.execSQL(CREATE_TABLE_JSON_TABLE);
         db.execSQL(CREATE_TABLE_IMAGE);
-    }
+    }*/
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
